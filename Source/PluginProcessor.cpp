@@ -97,18 +97,15 @@ void PolygonalSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int s
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    juce::dsp::ProcessSpec spec;
-    spec.sampleRate = sampleRate;
-    spec.maximumBlockSize = samplesPerBlock;
-    spec.numChannels = getTotalNumOutputChannels();
-    
-    osc.prepare(spec);
-    gain.prepare(spec);
-    
-    osc.setFrequency(220.0f);
-    gain.setGainLinear(0.01f);
     
     synth.setCurrentPlaybackSampleRate(sampleRate);
+    
+    for(int i=0; i < synth.getNumVoices(); ++i){
+        if(auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))){
+            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+        }
+        
+    }
 }
 
 void PolygonalSynthesizerAudioProcessor::releaseResources()
@@ -151,13 +148,9 @@ void PolygonalSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>&
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
-//    juce::dsp::AudioBlock<float> audioBlock{buffer};
-//    osc.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
-//    gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
     
     for(int i=0; i < synth.getNumVoices(); ++i){
-        if(auto voice = dynamic_cast<juce::SynthesiserSound*>(synth.getVoice(i))){
+        if(auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i))){
             // We deal with the voice parameter updates here later...
         }
     }
