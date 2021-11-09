@@ -29,6 +29,9 @@ public:
     
     void renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
     
+    juce::ADSR& getADSR(){return adsr;}
+    void updateADSR(const float a, const float d, const float s, const float r);
+    
 private:
     juce::ADSR adsr;
     juce::ADSR::Parameters adsrParams;

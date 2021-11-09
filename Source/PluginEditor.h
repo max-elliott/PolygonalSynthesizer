@@ -15,6 +15,13 @@ using APVTS = juce::AudioProcessorValueTreeState;
 using SliderAttachment = APVTS::SliderAttachment;
 using ComboBoxAttachment = APVTS::ComboBoxAttachment;
 
+struct CustomSlider: juce::Slider{
+    CustomSlider(): juce::Slider(juce::Slider::SliderStyle::LinearHorizontal,
+                                       juce::Slider::TextEntryBoxPosition::NoTextBox){
+        
+    }
+};
+
 //==============================================================================
 /**
 */
@@ -27,16 +34,18 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    
+    std::vector<juce::Component*> getComps();
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     PolygonalSynthesizerAudioProcessor& audioProcessor;
     
-    juce::Slider attackSlider;
-    juce::Slider decaySlider;
-    juce::Slider sustainSlider;
-    juce::Slider releaseSlider;
+    CustomSlider attackSlider;
+    CustomSlider decaySlider;
+    CustomSlider sustainSlider;
+    CustomSlider releaseSlider;
     
     juce::ComboBox waveformSelector;
     
@@ -45,7 +54,6 @@ private:
     sustainSliderAttachment,
     releaseSliderAttachment;
     std::unique_ptr<ComboBoxAttachment> waveformSelectorAttachment;
-    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PolygonalSynthesizerAudioProcessorEditor)
 };

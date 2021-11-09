@@ -155,6 +155,8 @@ void PolygonalSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>&
         }
     }
     
+    setParams();
+    
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
@@ -220,3 +222,28 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
     
     return layout;
 }
+
+void PolygonalSynthesizerAudioProcessor::setParams()
+{
+    setVoiceParams();
+//    setFilterParams();
+//    setReverbParams();
+}
+
+void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+    {
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
+        {
+            auto& attack = *apvts.getRawParameterValue ("Envelope Attack");
+            auto& decay = *apvts.getRawParameterValue ("Envelope Decay");
+            auto& sustain = *apvts.getRawParameterValue ("Envelope Sustain");
+            auto& release = *apvts.getRawParameterValue ("Envelope Release");
+            
+            voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
+        }
+        
+    }
+}
+
+
