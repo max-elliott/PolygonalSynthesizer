@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="JnLkLD" name="PolygonalSynthesizer" projectType="audioplug"
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
-              jucerFormatVersion="1" cppLanguageStandard="17">
+              jucerFormatVersion="1" cppLanguageStandard="17" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="fv40Mi" name="PolygonalSynthesizer">
     <GROUP id="{768A232D-4226-B84C-98F9-6BEEC8BFD2DC}" name="Source">
       <FILE id="GvA8VT" name="PluginProcessor.cpp" compile="1" resource="0"
