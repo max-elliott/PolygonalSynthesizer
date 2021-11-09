@@ -11,7 +11,18 @@
 
 //==============================================================================
 PolygonalSynthesizerAudioProcessorEditor::PolygonalSynthesizerAudioProcessorEditor (PolygonalSynthesizerAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p),
+audioProcessor (p),
+//attackSlider(*audioProcessor.apvts.getParameter("Envelope Attack"), "s")),
+//decaySlider(*audioProcessor.apvts.getParameter("Envelope Decay"), "s")),
+//sustainSlider(*audioProcessor.apvts.getParameter("Envelope Sustain"), "")),
+//releaseSlider(*audioProcessor.apvts.getParameter("Envelope Release"), "s")),
+//waveformSelector(*audioProcessor.apvts.getParameter("Waveform"), "")),
+attackSliderAttachment(std::make_unique<SliderAttachment>(audioProcessor.apvts, "Envelope Attack", attackSlider)),
+decaySliderAttachment(std::make_unique<SliderAttachment>(audioProcessor.apvts, "Envelope Decay", decaySlider)),
+sustainSliderAttachment(std::make_unique<SliderAttachment>(audioProcessor.apvts, "Envelope Sustain", sustainSlider)),
+releaseSliderAttachment(std::make_unique<SliderAttachment>(audioProcessor.apvts, "Envelope Release", releaseSlider)),
+waveformSelectorAttachment(std::make_unique<ComboBoxAttachment>(audioProcessor.apvts, "Waveform", waveformSelector))
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.

@@ -189,3 +189,34 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new PolygonalSynthesizerAudioProcessor();
 }
+
+juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioProcessor::createParameterLayout(){
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    
+    // Combo box to switch oscillators
+    layout.add(std::make_unique<juce::AudioParameterChoice>("Waveform", "Waveform", juce::StringArray{"sine", "sawtooth", "square"}, 0));
+    
+    // Attack - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
+                                                                 "Envelope Attack",
+                                                                 juce::NormalisableRange<float>{0.1f, 1.0f},
+                                                                 0.1f));
+    // Decay - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Decay",
+                                                                 "Envelope Decay",
+                                                                 juce::NormalisableRange<float>{0.1f, 1.0f},
+                                                                 0.1f));
+    // Sustain - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Sustain",
+                                                                 "Envelope Sustain",
+                                                                 juce::NormalisableRange<float>{0.1f, 1.0f},
+                                                                 1.0f));
+    // Release - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Release",
+                                                                 "Envelope Release",
+                                                                 juce::NormalisableRange<float>{0.1f, 4.0f},
+                                                                 0.4f));
+    
+    return layout;
+}
