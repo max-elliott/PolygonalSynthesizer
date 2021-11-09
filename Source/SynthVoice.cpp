@@ -21,6 +21,10 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::Synthesise
 
 void SynthVoice::stopNote (float velocity, bool allowTailOff){
     adsr.noteOff();
+    
+    if(!allowTailOff || !adsr.isActive()){
+        clearCurrentNote();
+    }
 }
 
 void SynthVoice::pitchWheelMoved (int newPitchWheelValue){
@@ -51,11 +55,26 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 void SynthVoice::renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples){
     jassert(isPrepared);
     
-    juce::dsp::AudioBlock<float> audioBlock{outputBuffer};
+    if (!isVoiceActive()){
+        return;
+    }
+    
+    synthBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    synthBuffer.clear();
+    
+    juce::dsp::AudioBlock<float> audioBlock{synthBuffer};
     osc.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
     gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
     
-    adsr.applyEnvelopeToBuffer(outputBuffer, startSample, numSamples);
+    adsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());
+    
+    for(int channelIdx=0; channelIdx< outputBuffer.getNumChannels(); channelIdx++){
+        outputBuffer.addFrom(channelIdx, startSample, synthBuffer, channelIdx, 0, numSamples);
+        
+        if (!adsr.isActive()){
+            clearCurrentNote();
+        }
+    }
 }
 
 void SynthVoice::updateADSR(const float a, const float d, const float s, const float r){

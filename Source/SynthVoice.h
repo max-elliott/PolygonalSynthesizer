@@ -39,4 +39,6 @@ private:
     juce::dsp::Oscillator<float> osc {[](float x){return std::sin(x);}};
     juce::dsp::Gain<float> gain;
     bool isPrepared{ false };
+    
+    juce::AudioBuffer<float> synthBuffer;
 };

@@ -157,6 +157,12 @@ void PolygonalSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     setParams();
     
+//    for(const auto metadata: midiMessages){
+//        if (metadata.numBytes == 3){
+//            juce::Logger::writeToLog("Timestamp: " + juce::String(metadata.getMessage().getTimeStamp()));
+//        }
+//    }
+    
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
