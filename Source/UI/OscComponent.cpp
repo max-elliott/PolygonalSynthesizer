@@ -15,6 +15,10 @@
 //==============================================================================
 OscComponent::OscComponent(APVTS& apvts, juce::String WaveformSelectionId, juce::String fmFreqId, juce::String fmdepthId)
 :
+fmFreqSlider(juce::Slider::SliderStyle::RotaryVerticalDrag,
+             juce::Slider::TextEntryBoxPosition::TextBoxRight),
+fmDepthSlider(juce::Slider::SliderStyle::RotaryVerticalDrag,
+              juce::Slider::TextEntryBoxPosition::TextBoxRight),
 waveformSelectorAttachment(std::make_unique<ComboBoxAttachment>(apvts, WaveformSelectionId, waveformSelector)),
 fmFreqAttachment(std::make_unique<SliderAttachment>(apvts, fmFreqId, fmFreqSlider)),
 fmDepthAttachment(std::make_unique<SliderAttachment>(apvts, fmdepthId, fmDepthSlider))

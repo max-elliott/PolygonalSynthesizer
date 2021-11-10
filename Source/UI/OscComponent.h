@@ -31,8 +31,8 @@ public:
 
 private:
     juce::ComboBox waveformSelector;
-    CustomSlider fmFreqSlider;
-    CustomSlider fmDepthSlider;
+    juce::Slider fmFreqSlider;
+    juce::Slider fmDepthSlider;
     
     std::unique_ptr<ComboBoxAttachment> waveformSelectorAttachment;
     std::unique_ptr<SliderAttachment> fmFreqAttachment;
