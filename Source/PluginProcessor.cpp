@@ -202,8 +202,20 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
     
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     
-    // Combo box to switch oscillators
+    // Combo box to switch oscillator waveform
     layout.add(std::make_unique<juce::AudioParameterChoice>("OSC1 Waveform", "OSC1 Waveform", juce::StringArray{"sine", "sawtooth", "square"}, 0));
+    
+    // FM Frequency - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 FM Freq",
+                                                           "OSC1 FM Frequency",
+                                                           juce::NormalisableRange<float>{0.0f, 1000.0f},
+                                                           5.0f));
+    
+    // FM Depth - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 FM Depth",
+                                                           "OSC1 FM Depth",
+                                                           juce::NormalisableRange<float>{0.0f, 1.0f},
+                                                           0.5f));
     
     // Attack - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
@@ -247,8 +259,12 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& release = *apvts.getRawParameterValue ("Envelope Release");
             
             auto& osc1WaveChoice = *apvts.getRawParameterValue("OSC1 Waveform");
+            auto& osc1FmFreq = *apvts.getRawParameterValue("OSC1 FM Freq");
+            auto& osc1FmDepth = *apvts.getRawParameterValue("OSC1 FM Depth");
+            
             
             voice->update(attack.load(), decay.load(), sustain.load(), release.load());
+            voice->getOscillator().setFmParams(osc1FmDepth, osc1FmFreq);
             voice->getOscillator().setWaveType(osc1WaveChoice);
         }
         
