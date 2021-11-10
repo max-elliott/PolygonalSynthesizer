@@ -35,6 +35,10 @@ void SynthVoice::controllerMoved (int controllerNumber, int newControllerValue){
     
 }
 
+void SynthVoice::update(const float a, const float d, const float s, const float r){
+    adsr.updateADSR(a, d, s, r);
+}
+
 void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels){
     
     adsr.setSampleRate(sampleRate);
@@ -75,13 +79,4 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int st
             clearCurrentNote();
         }
     }
-}
-
-void SynthVoice::updateADSR(const float a, const float d, const float s, const float r){
-    adsrParams.attack = a;
-    adsrParams.decay = d;
-    adsrParams.sustain = s;
-    adsrParams.release = r;
-    
-    adsr.setParameters(adsrParams);
 }

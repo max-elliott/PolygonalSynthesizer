@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "SynthSound.h"
+#include "Data/AdsrData.h"
 
 class SynthVoice: public juce::SynthesiserVoice{
 public:
@@ -29,13 +30,11 @@ public:
     
     void renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
     
-    juce::ADSR& getADSR(){return adsr;}
-    void updateADSR(const float a, const float d, const float s, const float r);
+    AdsrData& getADSR(){return adsr;}
+    void update(const float a, const float d, const float s, const float r);
     
 private:
-    juce::ADSR adsr;
-    juce::ADSR::Parameters adsrParams;
-    
+    AdsrData adsr;
     juce::dsp::Oscillator<float> osc {[](float x){return std::sin(x);}};
     juce::dsp::Gain<float> gain;
     bool isPrepared{ false };

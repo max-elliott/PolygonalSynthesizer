@@ -246,7 +246,7 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& sustain = *apvts.getRawParameterValue ("Envelope Sustain");
             auto& release = *apvts.getRawParameterValue ("Envelope Release");
             
-            voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
+            voice->update(attack.load(), decay.load(), sustain.load(), release.load());
         }
         
     }
