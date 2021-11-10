@@ -5,6 +5,19 @@
               jucerFormatVersion="1" cppLanguageStandard="17" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="fv40Mi" name="PolygonalSynthesizer">
     <GROUP id="{768A232D-4226-B84C-98F9-6BEEC8BFD2DC}" name="Source">
+      <GROUP id="{C8FEE920-F158-F850-0607-21169108DFB7}" name="Data">
+        <FILE id="HeCQaZ" name="AdsrData.cpp" compile="1" resource="0" file="Source/Data/AdsrData.cpp"/>
+        <FILE id="PmzB7f" name="AdsrData.h" compile="0" resource="0" file="Source/Data/AdsrData.h"/>
+      </GROUP>
+      <GROUP id="{2B6E674E-A81F-D1AE-4D8D-9E75862BC0F0}" name="UI">
+        <FILE id="yJHBTT" name="AdsrComponent.cpp" compile="1" resource="0"
+              file="Source/UI/AdsrComponent.cpp"/>
+        <FILE id="VyAxm8" name="AdsrComponent.h" compile="0" resource="0" file="Source/UI/AdsrComponent.h"/>
+        <FILE id="Du2gMJ" name="CustomSliderComponent.cpp" compile="1" resource="0"
+              file="Source/UI/CustomSliderComponent.cpp"/>
+        <FILE id="N2tN0m" name="CustomSliderComponent.h" compile="0" resource="0"
+              file="Source/UI/CustomSliderComponent.h"/>
+      </GROUP>
       <FILE id="GvA8VT" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="DkqkLM" name="PluginProcessor.h" compile="0" resource="0"

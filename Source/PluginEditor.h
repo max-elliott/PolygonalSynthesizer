@@ -10,17 +10,9 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "UI/AdsrComponent.h"
 
-using APVTS = juce::AudioProcessorValueTreeState;
-using SliderAttachment = APVTS::SliderAttachment;
 using ComboBoxAttachment = APVTS::ComboBoxAttachment;
-
-struct CustomSlider: juce::Slider{
-    CustomSlider(): juce::Slider(juce::Slider::SliderStyle::LinearHorizontal,
-                                       juce::Slider::TextEntryBoxPosition::NoTextBox){
-        
-    }
-};
 
 //==============================================================================
 /**
@@ -42,17 +34,9 @@ private:
     // access the processor object that created it.
     PolygonalSynthesizerAudioProcessor& audioProcessor;
     
-    CustomSlider attackSlider;
-    CustomSlider decaySlider;
-    CustomSlider sustainSlider;
-    CustomSlider releaseSlider;
+    AdsrComponent adsr;
     
     juce::ComboBox waveformSelector;
-    
-    std::unique_ptr<SliderAttachment> attackSliderAttachment,
-    decaySliderAttachment,
-    sustainSliderAttachment,
-    releaseSliderAttachment;
     std::unique_ptr<ComboBoxAttachment> waveformSelectorAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PolygonalSynthesizerAudioProcessorEditor)
