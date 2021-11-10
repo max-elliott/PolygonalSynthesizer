@@ -14,7 +14,11 @@
 
 class OscData : public juce::dsp::Oscillator<float>{
 public:
+    void prepareToPlay(juce::dsp::ProcessSpec& spec);
     void setWaveType(const int choice);
+    void processNextAudioBlock(juce::dsp::AudioBlock<float> audioBlock);
+    void setWaveFrequency(const int midiNoteNumber);
+    
 private:
     
 };

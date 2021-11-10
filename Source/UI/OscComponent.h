@@ -21,7 +21,7 @@ using ComboBoxAttachment = APVTS::ComboBoxAttachment;
 class OscComponent  : public juce::Component
 {
 public:
-    OscComponent(APVTS& apvts);
+    OscComponent(APVTS& apvts, juce::String WaveformSelectionId);
     ~OscComponent() override;
 
     void paint (juce::Graphics&) override;

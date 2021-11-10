@@ -14,7 +14,7 @@ PolygonalSynthesizerAudioProcessorEditor::PolygonalSynthesizerAudioProcessorEdit
     : AudioProcessorEditor (&p),
 audioProcessor (p),
 adsr(audioProcessor.apvts),
-osc(audioProcessor.apvts)
+osc1(audioProcessor.apvts, "OSC1 Waveform")
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -47,11 +47,11 @@ void PolygonalSynthesizerAudioProcessorEditor::resized()
     // Set bounds of Adsr
     adsr.setBounds(envelopeArea);
     
-    osc.setBounds(bounds);
+    osc1.setBounds(bounds);
 }
 
 std::vector<juce::Component*> PolygonalSynthesizerAudioProcessorEditor::getComps(){
     return {
         &adsr,
-        &osc};
+        &osc1};
 }

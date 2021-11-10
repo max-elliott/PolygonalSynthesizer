@@ -13,9 +13,9 @@
 #include "ComponentUtilities.h"
 
 //==============================================================================
-OscComponent::OscComponent(APVTS& apvts)
+OscComponent::OscComponent(APVTS& apvts, juce::String WaveformSelectionId)
 :
-waveformSelectorAttachment(std::make_unique<ComboBoxAttachment>(apvts, "OSC1 Waveform", waveformSelector))
+waveformSelectorAttachment(std::make_unique<ComboBoxAttachment>(apvts, WaveformSelectionId, waveformSelector))
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
