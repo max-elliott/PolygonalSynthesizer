@@ -13,9 +13,11 @@
 #include "ComponentUtilities.h"
 
 //==============================================================================
-OscComponent::OscComponent(APVTS& apvts, juce::String WaveformSelectionId)
+OscComponent::OscComponent(APVTS& apvts, juce::String WaveformSelectionId, juce::String fmFreqId, juce::String fmdepthId)
 :
-waveformSelectorAttachment(std::make_unique<ComboBoxAttachment>(apvts, WaveformSelectionId, waveformSelector))
+waveformSelectorAttachment(std::make_unique<ComboBoxAttachment>(apvts, WaveformSelectionId, waveformSelector)),
+fmFreqAttachment(std::make_unique<SliderAttachment>(apvts, fmFreqId, fmFreqSlider)),
+fmDepthAttachment(std::make_unique<SliderAttachment>(apvts, fmdepthId, fmDepthSlider))
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
@@ -23,6 +25,8 @@ waveformSelectorAttachment(std::make_unique<ComboBoxAttachment>(apvts, WaveformS
     waveformSelector.addItemList(choices, 1);
     
     addAndMakeVisible(waveformSelector);
+    addAndMakeVisible(fmFreqSlider);
+    addAndMakeVisible(fmDepthSlider);
 }
 
 OscComponent::~OscComponent()
@@ -45,6 +49,11 @@ void OscComponent::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    waveformSelector.setBounds(getLocalBounds());
+    auto bounds = getLocalBounds();
+    auto waveformSelectorBounds = bounds.removeFromLeft(bounds.getWidth() * 0.5);
+    
+    waveformSelector.setBounds(waveformSelectorBounds);
+    fmFreqSlider.setBounds(bounds.removeFromTop(bounds.getHeight() * 0.5));
+    fmDepthSlider.setBounds(bounds);
 
 }

@@ -14,7 +14,7 @@ PolygonalSynthesizerAudioProcessorEditor::PolygonalSynthesizerAudioProcessorEdit
     : AudioProcessorEditor (&p),
 audioProcessor (p),
 adsr(audioProcessor.apvts),
-osc1(audioProcessor.apvts, "OSC1 Waveform")
+osc1(audioProcessor.apvts, "OSC1 Waveform", "OSC1 FM Freq", "OSC1 FM Depth")
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -42,7 +42,7 @@ void PolygonalSynthesizerAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     auto bounds = getLocalBounds();
-    auto envelopeArea = bounds.removeFromTop(bounds.getHeight() * 0.8);
+    auto envelopeArea = bounds.removeFromTop(bounds.getHeight() * 0.5);
     
     // Set bounds of Adsr
     adsr.setBounds(envelopeArea);
