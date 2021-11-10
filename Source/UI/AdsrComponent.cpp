@@ -10,11 +10,7 @@
 
 #include <JuceHeader.h>
 #include "AdsrComponent.h"
-
-static void log_component_bounds(const juce::Component& comp){
-    juce::Logger::writeToLog("Component Start = (" + juce::String(comp.getX()) + ", " + juce::String(comp.getY()) + ")");
-    juce::Logger::writeToLog("Component Width and Height = (" + juce::String(comp.getWidth()) + ", " + juce::String(comp.getHeight()) + ")");
-}
+#include "ComponentUtilities.h"
 
 //==============================================================================
 AdsrComponent::AdsrComponent(juce::AudioProcessorValueTreeState& apvts)

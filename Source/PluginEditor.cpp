@@ -14,7 +14,7 @@ PolygonalSynthesizerAudioProcessorEditor::PolygonalSynthesizerAudioProcessorEdit
     : AudioProcessorEditor (&p),
 audioProcessor (p),
 adsr(audioProcessor.apvts),
-waveformSelectorAttachment(std::make_unique<ComboBoxAttachment>(audioProcessor.apvts, "Waveform", waveformSelector))
+osc(audioProcessor.apvts)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -47,11 +47,11 @@ void PolygonalSynthesizerAudioProcessorEditor::resized()
     // Set bounds of Adsr
     adsr.setBounds(envelopeArea);
     
-    waveformSelector.setBounds(bounds);
+    osc.setBounds(bounds);
 }
 
 std::vector<juce::Component*> PolygonalSynthesizerAudioProcessorEditor::getComps(){
     return {
         &adsr,
-        &waveformSelector};
+        &osc};
 }

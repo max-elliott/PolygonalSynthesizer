@@ -203,7 +203,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     
     // Combo box to switch oscillators
-    layout.add(std::make_unique<juce::AudioParameterChoice>("Waveform", "Waveform", juce::StringArray{"sine", "sawtooth", "square"}, 0));
+    layout.add(std::make_unique<juce::AudioParameterChoice>("OSC1 Waveform", "OSC1 Waveform", juce::StringArray{"sine", "sawtooth", "square"}, 0));
     
     // Attack - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
@@ -246,7 +246,10 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& sustain = *apvts.getRawParameterValue ("Envelope Sustain");
             auto& release = *apvts.getRawParameterValue ("Envelope Release");
             
+            auto& osc1WaveChoice = *apvts.getRawParameterValue("OSC1 Waveform");
+            
             voice->update(attack.load(), decay.load(), sustain.load(), release.load());
+            voice->getOscillator().setWaveType(osc1WaveChoice);
         }
         
     }

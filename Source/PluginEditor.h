@@ -11,8 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "UI/AdsrComponent.h"
-
-using ComboBoxAttachment = APVTS::ComboBoxAttachment;
+#include "UI/OscComponent.h"
 
 //==============================================================================
 /**
@@ -36,8 +35,7 @@ private:
     
     AdsrComponent adsr;
     
-    juce::ComboBox waveformSelector;
-    std::unique_ptr<ComboBoxAttachment> waveformSelectorAttachment;
+    OscComponent osc;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PolygonalSynthesizerAudioProcessorEditor)
 };
