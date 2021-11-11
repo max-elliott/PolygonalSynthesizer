@@ -106,12 +106,6 @@ void PolygonalSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int s
         }
         
     }
-    
-    juce::dsp::ProcessSpec spec;
-    spec.sampleRate = sampleRate;
-    spec.maximumBlockSize = samplesPerBlock;
-    spec.numChannels = getTotalNumOutputChannels();
-    filter.prepareToPlay(spec);
 }
 
 void PolygonalSynthesizerAudioProcessor::releaseResources()
@@ -170,7 +164,7 @@ void PolygonalSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>&
 //    }
     
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-    filter.process(buffer);
+//    filter.process(buffer);
 }
 
 //==============================================================================
@@ -284,8 +278,12 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& osc1FmFreq = *apvts.getRawParameterValue("OSC1 FM Freq");
             auto& osc1FmDepth = *apvts.getRawParameterValue("OSC1 FM Depth");
             
+            auto& filterType = *apvts.getRawParameterValue ("Filter Type");
+            auto& filterFrequency = *apvts.getRawParameterValue ("Filter Freq");
+            auto& filterResonance = *apvts.getRawParameterValue ("Filter Resonance");
             
-            voice->update(attack.load(), decay.load(), sustain.load(), release.load());
+            voice->updateFilter(filterType.load(), filterFrequency.load(), filterResonance.load());
+            voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
             voice->getOscillator().setFmParams(osc1FmDepth, osc1FmFreq);
             voice->getOscillator().setWaveType(osc1WaveChoice);
         }
@@ -294,10 +292,6 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
 }
 
 void PolygonalSynthesizerAudioProcessor::setFilterParams(){
-    auto& type = *apvts.getRawParameterValue ("Filter Type");
-    auto& frequency = *apvts.getRawParameterValue ("Filter Freq");
-    auto& resonance = *apvts.getRawParameterValue ("Filter Resonance");
-    
-    filter.updateParameters(type.load(), frequency.load(), resonance.load());
+
 }
 
