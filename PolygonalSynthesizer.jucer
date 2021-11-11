@@ -8,6 +8,8 @@
       <GROUP id="{C8FEE920-F158-F850-0607-21169108DFB7}" name="Data">
         <FILE id="HeCQaZ" name="AdsrData.cpp" compile="1" resource="0" file="Source/Data/AdsrData.cpp"/>
         <FILE id="PmzB7f" name="AdsrData.h" compile="0" resource="0" file="Source/Data/AdsrData.h"/>
+        <FILE id="r7vy4u" name="FilterData.cpp" compile="1" resource="0" file="Source/Data/FilterData.cpp"/>
+        <FILE id="S6YZVz" name="FilterData.h" compile="0" resource="0" file="Source/Data/FilterData.h"/>
         <FILE id="eVY47E" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>
         <FILE id="dfcgNC" name="OscData.h" compile="0" resource="0" file="Source/Data/OscData.h"/>
       </GROUP>
@@ -21,6 +23,10 @@
               file="Source/UI/CustomSliderComponent.cpp"/>
         <FILE id="N2tN0m" name="CustomSliderComponent.h" compile="0" resource="0"
               file="Source/UI/CustomSliderComponent.h"/>
+        <FILE id="ojz1pz" name="FilterComponent.cpp" compile="1" resource="0"
+              file="Source/UI/FilterComponent.cpp"/>
+        <FILE id="ikk9Ca" name="FilterComponent.h" compile="0" resource="0"
+              file="Source/UI/FilterComponent.h"/>
         <FILE id="JPVD5W" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="Fn43O0" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>

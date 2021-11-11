@@ -106,6 +106,12 @@ void PolygonalSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int s
         }
         
     }
+    
+    juce::dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = getTotalNumOutputChannels();
+    filter.prepareToPlay(spec);
 }
 
 void PolygonalSynthesizerAudioProcessor::releaseResources()
@@ -164,6 +170,7 @@ void PolygonalSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>&
 //    }
     
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    filter.process(buffer);
 }
 
 //==============================================================================
@@ -238,13 +245,28 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
                                                                  juce::NormalisableRange<float>{0.0f, 8.0f, 0.01, 0.25},
                                                                  0.4f));
     
+    // Filter type - Choice
+    layout.add(std::make_unique<juce::AudioParameterChoice>("Filter Type", "Filter Type", juce::StringArray{"LowPass", "BandPass", "HighPass"}, 0));
+    
+    // Filter frequency - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Freq",
+                                                           "Filter Freq",
+                                                           juce::NormalisableRange<float>{20.0f, 20000.0f, 1.0f, 0.33f},
+                                                           500.0f));
+    
+    // Filter resonance - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Resonance",
+                                                           "Filter Resonance",
+                                                           juce::NormalisableRange<float>{0.01f, 3.0f, 0.01f, 0.33f},
+                                                           1.0f));
+    
     return layout;
 }
 
 void PolygonalSynthesizerAudioProcessor::setParams()
 {
     setVoiceParams();
-//    setFilterParams();
+    setFilterParams();
 //    setReverbParams();
 }
 
@@ -271,4 +293,11 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
     }
 }
 
+void PolygonalSynthesizerAudioProcessor::setFilterParams(){
+    auto& type = *apvts.getRawParameterValue ("Filter Type");
+    auto& frequency = *apvts.getRawParameterValue ("Filter Freq");
+    auto& resonance = *apvts.getRawParameterValue ("Filter Resonance");
+    
+    filter.updateParameters(type.load(), frequency.load(), resonance.load());
+}
 

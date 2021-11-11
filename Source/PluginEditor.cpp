@@ -14,7 +14,8 @@ PolygonalSynthesizerAudioProcessorEditor::PolygonalSynthesizerAudioProcessorEdit
     : AudioProcessorEditor (&p),
 audioProcessor (p),
 adsr(audioProcessor.apvts),
-osc1(audioProcessor.apvts, "OSC1 Waveform", "OSC1 FM Freq", "OSC1 FM Depth")
+osc1(audioProcessor.apvts, "OSC1 Waveform", "OSC1 FM Freq", "OSC1 FM Depth"),
+filter(audioProcessor.apvts, "Filter Type", "Filter Freq", "Filter Resonance")
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -33,7 +34,7 @@ PolygonalSynthesizerAudioProcessorEditor::~PolygonalSynthesizerAudioProcessorEdi
 void PolygonalSynthesizerAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+//    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     g.fillAll (juce::Colours::black);
 }
 
@@ -43,15 +44,19 @@ void PolygonalSynthesizerAudioProcessorEditor::resized()
     // subcomponents in your editor..
     auto bounds = getLocalBounds();
     auto envelopeArea = bounds.removeFromTop(bounds.getHeight() * 0.5);
+    auto oscArea = bounds.removeFromLeft(bounds.getWidth() * 0.5);
+    auto filterArea = bounds;
     
     // Set bounds of Adsr
     adsr.setBounds(envelopeArea);
-    
-    osc1.setBounds(bounds);
+    osc1.setBounds(oscArea);
+    filter.setBounds(filterArea);
 }
 
 std::vector<juce::Component*> PolygonalSynthesizerAudioProcessorEditor::getComps(){
     return {
         &adsr,
-        &osc1};
+        &osc1,
+        &filter
+    };
 }

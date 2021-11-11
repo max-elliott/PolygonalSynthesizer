@@ -13,6 +13,7 @@
 void OscData::prepareToPlay(juce::dsp::ProcessSpec& spec){
     fmOsc.prepare(spec);
     prepare(spec);
+    isPrepared = true;
 }
 
 void OscData::setWaveType(const int choice){
@@ -34,6 +35,7 @@ void OscData::setWaveType(const int choice){
 }
 
 void OscData::processNextAudioBlock(juce::dsp::AudioBlock<float> audioBlock){
+    jassert(isPrepared);
     
     for(int channelIdx=0; channelIdx < audioBlock.getNumChannels(); channelIdx++){
         for (int sampleIdx=0; sampleIdx < audioBlock.getNumSamples(); sampleIdx++){
@@ -51,5 +53,5 @@ void OscData::setWaveFrequency(const int midiNoteNumber){
 void OscData::setFmParams(const float depth, const float freq){
     fmOsc.setFrequency(freq);
     fmDepth = depth;
-    setFrequency(currentNoteFrequency + fmMod);
+    setFrequency(currentNoteFrequency + fmMod); // Change FM stuff to work in semitones
 }

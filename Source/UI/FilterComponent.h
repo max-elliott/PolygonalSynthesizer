@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    OscComponent.h
-    Created: 10 Nov 2021 2:51:38pm
+    FilterComponent.h
+    Created: 11 Nov 2021 12:39:43pm
     Author:  Max Elliott
 
   ==============================================================================
@@ -20,23 +20,24 @@ using SliderAttachment = APVTS::SliderAttachment;
 //==============================================================================
 /*
 */
-class OscComponent  : public juce::Component
+class FilterComponent  : public juce::Component
 {
 public:
-    OscComponent(APVTS& apvts, juce::String WaveformSelectionId, juce::String fmFreqId, juce::String fmdepthId);
-    ~OscComponent() override;
+    FilterComponent(APVTS& apvts, juce::String type, juce::String frequency, juce::String resonance);
+    ~FilterComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
-    juce::ComboBox waveformSelector;
-    CustomRotarySlider fmFreqSlider;
-    CustomRotarySlider fmDepthSlider;
     
-    std::unique_ptr<ComboBoxAttachment> waveformSelectorAttachment;
-    std::unique_ptr<SliderAttachment> fmFreqAttachment;
-    std::unique_ptr<SliderAttachment> fmDepthAttachment;
+    juce::ComboBox typeSelector;
+    CustomRotarySlider freqSlider;
+    CustomRotarySlider resSlider;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscComponent)
+    std::unique_ptr<ComboBoxAttachment> typeSelectorAttachment;
+    std::unique_ptr<SliderAttachment> freqSliderAttachment;
+    std::unique_ptr<SliderAttachment> resSliderAttachment;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterComponent)
 };

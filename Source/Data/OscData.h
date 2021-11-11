@@ -25,4 +25,5 @@ private:
     float fmMod{0.0f};
     float fmDepth{0.0f};
     double currentNoteFrequency{0.0};
+    bool isPrepared{ false };
 };

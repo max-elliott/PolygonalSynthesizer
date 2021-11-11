@@ -34,3 +34,10 @@ struct CustomSlider: juce::Slider{
         
     }
 };
+
+struct CustomRotarySlider: juce::Slider{
+    CustomRotarySlider(): juce::Slider(juce::Slider::SliderStyle::RotaryVerticalDrag,
+                                 juce::Slider::TextEntryBoxPosition::TextBoxBelow){
+        
+    }
+};
