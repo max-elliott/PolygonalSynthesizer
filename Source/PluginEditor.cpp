@@ -8,12 +8,14 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "UI/ComponentUtilities.h"
 
 //==============================================================================
 PolygonalSynthesizerAudioProcessorEditor::PolygonalSynthesizerAudioProcessorEditor (PolygonalSynthesizerAudioProcessor& p)
     : AudioProcessorEditor (&p),
 audioProcessor (p),
-adsr(audioProcessor.apvts),
+adsrVolume(audioProcessor.apvts, "Envelope Attack", "Envelope Decay", "Envelope Sustain", "Envelope Release"),
+adsrMod(audioProcessor.apvts, "Mod Envelope Attack", "Mod Envelope Decay", "Mod Envelope Sustain", "Mod Envelope Release"),
 osc1(audioProcessor.apvts, "OSC1 Waveform", "OSC1 FM Freq", "OSC1 FM Depth"),
 filter(audioProcessor.apvts, "Filter Type", "Filter Freq", "Filter Resonance")
 {
@@ -44,18 +46,28 @@ void PolygonalSynthesizerAudioProcessorEditor::resized()
     // subcomponents in your editor..
     auto bounds = getLocalBounds();
     auto envelopeArea = bounds.removeFromTop(bounds.getHeight() * 0.5);
+    auto envelopeVolumeArea = envelopeArea.removeFromLeft(envelopeArea.getWidth() * 0.5);
+    auto envelopeModArea = envelopeArea;
     auto oscArea = bounds.removeFromLeft(bounds.getWidth() * 0.5);
     auto filterArea = bounds;
     
     // Set bounds of Adsr
-    adsr.setBounds(envelopeArea);
+    adsrVolume.setBounds(envelopeVolumeArea);
+    adsrMod.setBounds(envelopeModArea);
     osc1.setBounds(oscArea);
     filter.setBounds(filterArea);
+    
+    logComponentBounds(adsrMod);
+    if (adsrMod.isVisible()){
+        juce::Logger::writeToLog(juce::String("adsrMod is visible"));
+    }
+    
 }
 
 std::vector<juce::Component*> PolygonalSynthesizerAudioProcessorEditor::getComps(){
     return {
-        &adsr,
+        &adsrVolume,
+        &adsrMod,
         &osc1,
         &filter
     };

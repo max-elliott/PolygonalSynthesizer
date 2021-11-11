@@ -22,7 +22,7 @@ using SliderAttachment = APVTS::SliderAttachment;
 class AdsrComponent  : public juce::Component
 {
 public:
-    AdsrComponent(APVTS& apvts);
+    AdsrComponent(APVTS& apvts, juce::String attackId, juce::String decayId, juce::String sustainId, juce::String releaseId);
     ~AdsrComponent() override;
 
     void paint (juce::Graphics&) override;

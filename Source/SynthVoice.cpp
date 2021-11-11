@@ -17,10 +17,12 @@ bool SynthVoice::canPlaySound (juce::SynthesiserSound* sound){
 void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound *sound, int currentPitchWheelPosition){
     osc.setWaveFrequency(midiNoteNumber);
     adsr.noteOn();
+    adsrMod.noteOn();
 }
 
 void SynthVoice::stopNote (float velocity, bool allowTailOff){
     adsr.noteOff();
+    adsrMod.noteOff();
     
     if(!allowTailOff || !adsr.isActive()){
         clearCurrentNote();
@@ -39,13 +41,20 @@ void SynthVoice::updateADSR(const float a, const float d, const float s, const f
     adsr.updateParameters(a, d, s, r);
 }
 
+void SynthVoice::updateADSRMod(const float a, const float d, const float s, const float r){
+    adsrMod.updateParameters(a, d, s, r);
+}
+
 void SynthVoice::updateFilter(const int type, const float frequency, const float resonance){
-    filter.updateParameters(type, frequency, resonance);
+    float modMultiplier = adsrMod.getNextSample();
+    float filterFreqModulated = std::fmin(std::fmax(frequency * modMultiplier, 20.0f), 20000.0f);
+    filter.updateParameters(type, filterFreqModulated, resonance);
 }
 
 void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels){
     
     adsr.setSampleRate(sampleRate);
+    adsrMod.setSampleRate(sampleRate);
     
     juce::dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
@@ -70,14 +79,17 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int st
     }
     
     synthBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    adsrMod.applyEnvelopeToBuffer(outputBuffer, 0, numSamples);
     synthBuffer.clear();
+
     
     juce::dsp::AudioBlock<float> audioBlock{synthBuffer};
     osc.processNextAudioBlock(audioBlock);
+    adsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());
     filter.process(synthBuffer);
     gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
     
-    adsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());
+    
     
     for(int channelIdx=0; channelIdx< outputBuffer.getNumChannels(); channelIdx++){
         outputBuffer.addFrom(channelIdx, startSample, synthBuffer, channelIdx, 0, numSamples);

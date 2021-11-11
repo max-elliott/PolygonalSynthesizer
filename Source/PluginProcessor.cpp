@@ -217,7 +217,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
                                                            "OSC1 FM Depth",
                                                            juce::NormalisableRange<float>{0.0f, 1.0f},
                                                            0.5f));
-    
     // Attack - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
                                                                  "Envelope Attack",
@@ -238,7 +237,26 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
                                                                  "Envelope Release",
                                                                  juce::NormalisableRange<float>{0.0f, 8.0f, 0.01, 0.25},
                                                                  0.4f));
-    
+    // Mod ADSR Attack - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mod Envelope Attack",
+                                                           "Mod Envelope Attack",
+                                                           juce::NormalisableRange<float>{0.02f, 2.0f, 0.01, 0.25},
+                                                           0.1f));
+    // Mod ADSR Decay - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mod Envelope Decay",
+                                                           "Mod Envelope Decay",
+                                                           juce::NormalisableRange<float>{0.02f, 2.0f, 0.01, 0.25},
+                                                           0.1f));
+    // Mod ADSR Sustain - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mod Envelope Sustain",
+                                                           "Mod Envelope Sustain",
+                                                           juce::NormalisableRange<float>{0.0f, 1.0f, 0.01f, 0.25},
+                                                           1.0f));
+    // Mod ADSR Release - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mod Envelope Release",
+                                                           "Mod Envelope Release",
+                                                           juce::NormalisableRange<float>{0.0f, 8.0f, 0.01, 0.25},
+                                                           0.4f));
     // Filter type - Choice
     layout.add(std::make_unique<juce::AudioParameterChoice>("Filter Type", "Filter Type", juce::StringArray{"LowPass", "BandPass", "HighPass"}, 0));
     
@@ -274,6 +292,11 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& sustain = *apvts.getRawParameterValue ("Envelope Sustain");
             auto& release = *apvts.getRawParameterValue ("Envelope Release");
             
+            auto& modAttack = *apvts.getRawParameterValue ("Mod Envelope Attack");
+            auto& modDecay = *apvts.getRawParameterValue ("Mod Envelope Decay");
+            auto& modSustain = *apvts.getRawParameterValue ("Mod Envelope Sustain");
+            auto& modRelease = *apvts.getRawParameterValue ("Mod Envelope Release");
+            
             auto& osc1WaveChoice = *apvts.getRawParameterValue("OSC1 Waveform");
             auto& osc1FmFreq = *apvts.getRawParameterValue("OSC1 FM Freq");
             auto& osc1FmDepth = *apvts.getRawParameterValue("OSC1 FM Depth");
@@ -282,6 +305,7 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& filterFrequency = *apvts.getRawParameterValue ("Filter Freq");
             auto& filterResonance = *apvts.getRawParameterValue ("Filter Resonance");
             
+            voice->updateADSRMod(modAttack.load(), modDecay.load(), modSustain.load(), modRelease.load());
             voice->updateFilter(filterType.load(), filterFrequency.load(), filterResonance.load());
             voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
             voice->getOscillator().setFmParams(osc1FmDepth, osc1FmFreq);

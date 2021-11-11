@@ -13,12 +13,12 @@
 #include "ComponentUtilities.h"
 
 //==============================================================================
-AdsrComponent::AdsrComponent(juce::AudioProcessorValueTreeState& apvts)
+AdsrComponent::AdsrComponent(juce::AudioProcessorValueTreeState& apvts, juce::String attackId, juce::String decayId, juce::String sustainId, juce::String releaseId)
 :
-attackSliderAttachment(std::make_unique<SliderAttachment>(apvts, "Envelope Attack", attackSlider)),
-decaySliderAttachment(std::make_unique<SliderAttachment>(apvts, "Envelope Decay", decaySlider)),
-sustainSliderAttachment(std::make_unique<SliderAttachment>(apvts, "Envelope Sustain", sustainSlider)),
-releaseSliderAttachment(std::make_unique<SliderAttachment>(apvts, "Envelope Release", releaseSlider))
+attackSliderAttachment(std::make_unique<SliderAttachment>(apvts, attackId, attackSlider)),
+decaySliderAttachment(std::make_unique<SliderAttachment>(apvts, decayId, decaySlider)),
+sustainSliderAttachment(std::make_unique<SliderAttachment>(apvts, sustainId, sustainSlider)),
+releaseSliderAttachment(std::make_unique<SliderAttachment>(apvts, releaseId, releaseSlider))
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
@@ -49,7 +49,7 @@ void AdsrComponent::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    auto bounds = getBounds();
+    auto bounds = getLocalBounds();
     int envelopeHeight = bounds.getHeight();
     
     attackSlider.setBounds(bounds.removeFromTop(envelopeHeight * 0.25));

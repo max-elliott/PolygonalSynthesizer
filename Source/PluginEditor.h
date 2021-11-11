@@ -34,7 +34,8 @@ private:
     // access the processor object that created it.
     PolygonalSynthesizerAudioProcessor& audioProcessor;
     
-    AdsrComponent adsr;
+    AdsrComponent adsrVolume;
+    AdsrComponent adsrMod;
     OscComponent osc1;
     FilterComponent filter;
 
