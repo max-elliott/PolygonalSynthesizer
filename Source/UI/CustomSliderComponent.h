@@ -30,7 +30,7 @@
 
 struct CustomSlider: juce::Slider{
     CustomSlider(): juce::Slider(juce::Slider::SliderStyle::LinearHorizontal,
-                                 juce::Slider::TextEntryBoxPosition::NoTextBox){
+                                 juce::Slider::TextEntryBoxPosition::TextBoxRight){
         
     }
 };

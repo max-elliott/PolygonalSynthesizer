@@ -220,22 +220,22 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
     // Attack - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
                                                                  "Envelope Attack",
-                                                                 juce::NormalisableRange<float>{0.1f, 1.0f},
+                                                                 juce::NormalisableRange<float>{0.02f, 2.0f, 0.01, 0.25},
                                                                  0.1f));
     // Decay - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Decay",
                                                                  "Envelope Decay",
-                                                                 juce::NormalisableRange<float>{0.1f, 1.0f},
+                                                                 juce::NormalisableRange<float>{0.02f, 2.0f, 0.01, 0.25},
                                                                  0.1f));
     // Sustain - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Sustain",
                                                                  "Envelope Sustain",
-                                                                 juce::NormalisableRange<float>{0.1f, 1.0f},
+                                                                 juce::NormalisableRange<float>{0.0f, 1.0f, 0.01f, 0.25},
                                                                  1.0f));
     // Release - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Release",
                                                                  "Envelope Release",
-                                                                 juce::NormalisableRange<float>{0.1f, 4.0f},
+                                                                 juce::NormalisableRange<float>{0.0f, 8.0f, 0.01, 0.25},
                                                                  0.4f));
     
     return layout;
