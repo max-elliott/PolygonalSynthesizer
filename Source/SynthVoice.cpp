@@ -47,7 +47,11 @@ void SynthVoice::updateADSRMod(const float a, const float d, const float s, cons
 
 void SynthVoice::updateFilter(const int type, const float frequency, const float resonance){
     float modMultiplier = adsrMod.getNextSample();
-    float filterFreqModulated = std::fmin(std::fmax(frequency * modMultiplier, 20.0f), 20000.0f);
+    float modMaxMagnitude = 0.5f;
+    float frequency_delta = 20000.0f - frequency;
+    
+    float filterFreqModulated = frequency + (frequency_delta* modMaxMagnitude * modMultiplier);
+    filterFreqModulated = std::fmin(std::fmax(filterFreqModulated, 20.0f), 20000.0f);
     filter.updateParameters(type, filterFreqModulated, resonance);
 }
 
