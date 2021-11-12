@@ -23,7 +23,11 @@ PolygonalSynthesizerAudioProcessor::PolygonalSynthesizerAudioProcessor()
 #endif
 {
     synth.addSound(new SynthSound());
-    synth.addVoice(new SynthVoice());
+    for(int voiceIdx=0; voiceIdx < numVoices; voiceIdx++){
+        synth.addVoice(new SynthVoice());
+    }
+    
+    
 }
 
 PolygonalSynthesizerAudioProcessor::~PolygonalSynthesizerAudioProcessor()

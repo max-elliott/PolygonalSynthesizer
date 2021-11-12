@@ -67,6 +67,8 @@ private:
     
     juce::Synthesiser synth;
     
+    const int numVoices = 1;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PolygonalSynthesizerAudioProcessor)
 };
