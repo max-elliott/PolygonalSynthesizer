@@ -221,6 +221,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
                                                            "OSC1 FM Depth",
                                                            juce::NormalisableRange<float>{0.0f, 1.0f},
                                                            0.5f));
+    // Osc1 Gain - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Gain",
+                                                           "OSC1 Gain",
+                                                           juce::NormalisableRange<float>{0.0f, 1.0f, 0.001f, 0.33f},
+                                                           0.1f));
     // Attack - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
                                                                  "Envelope Attack",
@@ -305,15 +310,20 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& osc1FmFreq = *apvts.getRawParameterValue("OSC1 FM Freq");
             auto& osc1FmDepth = *apvts.getRawParameterValue("OSC1 FM Depth");
             
+            auto& osc1Gain = *apvts.getRawParameterValue("OSC1 Gain");
+            
             auto& filterType = *apvts.getRawParameterValue ("Filter Type");
             auto& filterFrequency = *apvts.getRawParameterValue ("Filter Freq");
             auto& filterResonance = *apvts.getRawParameterValue ("Filter Resonance");
             
+            
+            
             voice->updateADSRMod(modAttack.load(), modDecay.load(), modSustain.load(), modRelease.load());
             voice->updateFilter(filterType.load(), filterFrequency.load(), filterResonance.load());
             voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
-            voice->getOscillator().setFmParams(osc1FmDepth, osc1FmFreq);
-            voice->getOscillator().setWaveType(osc1WaveChoice);
+            voice->getOscillator().setGain(osc1Gain.load());
+//            voice->getOscillator().setFmParams(osc1FmDepth, osc1FmFreq);
+//            voice->getOscillator().setWaveType(osc1WaveChoice);
         }
         
     }

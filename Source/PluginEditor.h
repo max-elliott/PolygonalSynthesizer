@@ -13,6 +13,7 @@
 #include "UI/AdsrComponent.h"
 #include "UI/OscComponent.h"
 #include "UI/FilterComponent.h"
+#include "UI/PolygonalOscComponent.h"
 
 //==============================================================================
 /**
@@ -36,7 +37,7 @@ private:
     
     AdsrComponent adsrVolume;
     AdsrComponent adsrMod;
-    OscComponent osc1;
+    PolygonalOscComponent osc1;
     FilterComponent filter;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PolygonalSynthesizerAudioProcessorEditor)

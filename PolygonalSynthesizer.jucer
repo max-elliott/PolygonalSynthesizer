@@ -12,6 +12,10 @@
         <FILE id="S6YZVz" name="FilterData.h" compile="0" resource="0" file="Source/Data/FilterData.h"/>
         <FILE id="eVY47E" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>
         <FILE id="dfcgNC" name="OscData.h" compile="0" resource="0" file="Source/Data/OscData.h"/>
+        <FILE id="ENzLXh" name="PolygonalOscData.cpp" compile="1" resource="0"
+              file="Source/Data/PolygonalOscData.cpp"/>
+        <FILE id="Rmaepk" name="PolygonalOscData.h" compile="0" resource="0"
+              file="Source/Data/PolygonalOscData.h"/>
       </GROUP>
       <GROUP id="{2B6E674E-A81F-D1AE-4D8D-9E75862BC0F0}" name="UI">
         <FILE id="yJHBTT" name="AdsrComponent.cpp" compile="1" resource="0"
@@ -30,6 +34,10 @@
         <FILE id="JPVD5W" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="Fn43O0" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>
+        <FILE id="kWtBYD" name="PolygonalOscComponent.cpp" compile="1" resource="0"
+              file="Source/UI/PolygonalOscComponent.cpp"/>
+        <FILE id="m8pQ1Y" name="PolygonalOscComponent.h" compile="0" resource="0"
+              file="Source/UI/PolygonalOscComponent.h"/>
       </GROUP>
       <FILE id="GvA8VT" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

@@ -15,6 +15,7 @@
 #include "Data/AdsrData.h"
 #include "Data/OscData.h"
 #include "Data/FilterData.h"
+#include "Data/PolygonalOscData.h"
 
 class SynthVoice: public juce::SynthesiserVoice{
 public:
@@ -38,11 +39,11 @@ public:
     
     AdsrData& getADSR(){return adsr;}
     AdsrData& getADSRMod(){return adsrMod;}
-    OscData& getOscillator(){return osc;};
+    PolygonalOscData& getOscillator(){return osc;};
     
 private:
     AdsrData adsr;
-    OscData osc;
+    PolygonalOscData osc;
     FilterData filter;
     juce::dsp::Gain<float> gain;
     
