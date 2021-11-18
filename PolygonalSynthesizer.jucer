@@ -8,6 +8,8 @@
       <GROUP id="{C8FEE920-F158-F850-0607-21169108DFB7}" name="Data">
         <FILE id="HeCQaZ" name="AdsrData.cpp" compile="1" resource="0" file="Source/Data/AdsrData.cpp"/>
         <FILE id="PmzB7f" name="AdsrData.h" compile="0" resource="0" file="Source/Data/AdsrData.h"/>
+        <FILE id="Ni45vQ" name="CustomOscillator.h" compile="0" resource="0"
+              file="Source/Data/CustomOscillator.h"/>
         <FILE id="r7vy4u" name="FilterData.cpp" compile="1" resource="0" file="Source/Data/FilterData.cpp"/>
         <FILE id="S6YZVz" name="FilterData.h" compile="0" resource="0" file="Source/Data/FilterData.h"/>
         <FILE id="eVY47E" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>

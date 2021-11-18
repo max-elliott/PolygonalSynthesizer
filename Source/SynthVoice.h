@@ -36,6 +36,7 @@ public:
     void updateADSR(const float a, const float d, const float s, const float r);
     void updateFilter(const int type, const float frequency, const float resonance);
     void updateADSRMod(const float a, const float d, const float s, const float r);
+    void setOscillatorParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhase, const float newGain);
     
     AdsrData& getADSR(){return adsr;}
     AdsrData& getADSRMod(){return adsrMod;}
@@ -45,11 +46,11 @@ private:
     AdsrData adsr;
     PolygonalOscData osc;
     FilterData filter;
-    juce::dsp::Gain<float> gain;
     
     AdsrData adsrMod;
     
     bool isPrepared{ false };
     
     juce::AudioBuffer<float> synthBuffer;
+    float currentVelocity;
 };

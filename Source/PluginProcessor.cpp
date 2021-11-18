@@ -221,11 +221,31 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
                                                            "OSC1 FM Depth",
                                                            juce::NormalisableRange<float>{0.0f, 1.0f},
                                                            0.5f));
+    // Osc1 Pitch Adjustment - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Pitch",
+                                                           "OSC1 Pitch",
+                                                           juce::NormalisableRange<float>{0.25f, 4.0f, 0.01f, 1.0f},
+                                                           1.0f));
     // Osc1 Gain - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Gain",
                                                            "OSC1 Gain",
                                                            juce::NormalisableRange<float>{0.0f, 1.0f, 0.001f, 0.33f},
                                                            0.1f));
+    // Osc1 Order - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Order",
+                                                           "OSC1 Order",
+                                                           juce::NormalisableRange<float>{2.1f, 20.0f, 0.1f, 0.33f},
+                                                           4.0f));
+    // Osc1 Teeth - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Teeth",
+                                                           "OSC1 Teeth",
+                                                           juce::NormalisableRange<float>{0.0f, 1.0f, 0.001f, 1.0f},
+                                                           0.0f));
+    // Osc1 Gain - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Phase Rotation",
+                                                           "OSC1 Phase Rotation",
+                                                           juce::NormalisableRange<float>{0.0f, 5.0f, 0.1f, 1.0f},
+                                                           0.0f));
     // Attack - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
                                                                  "Envelope Attack",
@@ -310,6 +330,10 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& osc1FmFreq = *apvts.getRawParameterValue("OSC1 FM Freq");
             auto& osc1FmDepth = *apvts.getRawParameterValue("OSC1 FM Depth");
             
+            auto& osc1PitchAdjustment = *apvts.getRawParameterValue("OSC1 Pitch");
+            auto& osc1Order = *apvts.getRawParameterValue("OSC1 Order");
+            auto& osc1Teeth = *apvts.getRawParameterValue("OSC1 Teeth");
+            auto& osc1PhaseRotation = *apvts.getRawParameterValue("OSC1 Phase Rotation");
             auto& osc1Gain = *apvts.getRawParameterValue("OSC1 Gain");
             
             auto& filterType = *apvts.getRawParameterValue ("Filter Type");
@@ -321,7 +345,7 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             voice->updateADSRMod(modAttack.load(), modDecay.load(), modSustain.load(), modRelease.load());
             voice->updateFilter(filterType.load(), filterFrequency.load(), filterResonance.load());
             voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
-            voice->getOscillator().setGain(osc1Gain.load());
+            voice->setOscillatorParameters(osc1PitchAdjustment.load(), osc1Order.load(), osc1Teeth.load(), osc1PhaseRotation.load(), osc1Gain.load());
 //            voice->getOscillator().setFmParams(osc1FmDepth, osc1FmFreq);
 //            voice->getOscillator().setWaveType(osc1WaveChoice);
         }

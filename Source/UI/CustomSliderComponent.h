@@ -28,9 +28,16 @@
 //    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomSliderComponent)
 //};
 
-struct CustomSlider: juce::Slider{
-    CustomSlider(): juce::Slider(juce::Slider::SliderStyle::LinearHorizontal,
+struct CustomHorizontalSlider: juce::Slider{
+    CustomHorizontalSlider(): juce::Slider(juce::Slider::SliderStyle::LinearHorizontal,
                                  juce::Slider::TextEntryBoxPosition::TextBoxRight){
+        
+    }
+};
+
+struct CustomVerticalSlider: juce::Slider{
+    CustomVerticalSlider(): juce::Slider(juce::Slider::SliderStyle::LinearVertical,
+                                 juce::Slider::TextEntryBoxPosition::TextBoxBelow){
         
     }
 };

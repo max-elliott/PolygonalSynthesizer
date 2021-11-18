@@ -12,13 +12,20 @@
 #include "PolygonalOscComponent.h"
 
 //==============================================================================
-PolygonalOscComponent::PolygonalOscComponent(APVTS& apvts, juce::String gainId)
+PolygonalOscComponent::PolygonalOscComponent(APVTS& apvts, juce::String pitchId, juce::String orderId, juce::String teethId, juce::String phaseId, juce::String gainId)
 :
+pitchAdjustmentSliderAttachment(std::make_unique<SliderAttachment>(apvts, pitchId, pitchAdjustmentSlider)),
+orderSliderAttachment(std::make_unique<SliderAttachment>(apvts, orderId, orderSlider)),
+teethSliderAttachment(std::make_unique<SliderAttachment>(apvts, teethId, teethSlider)),
+phaseSliderAttachment(std::make_unique<SliderAttachment>(apvts, phaseId, phaseSlider)),
 gainSliderAttachment(std::make_unique<SliderAttachment>(apvts, gainId, gainSlider))
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
-    addAndMakeVisible(gainSlider);
+    for(auto c : getComps()){
+        addAndMakeVisible(c);
+    }
+//    addAndMakeVisible(gainSlider);
 }
 
 PolygonalOscComponent::~PolygonalOscComponent()
@@ -42,7 +49,29 @@ void PolygonalOscComponent::resized()
     // This method is where you should set the bounds of any child
     // components that your component contains..
     auto bounds = getLocalBounds();
+    int numSliders = 5;
+    auto widthEach = bounds.proportionOfWidth(1.0f / float(numSliders));
     
-    gainSlider.setBounds(bounds);
+    auto pitchAdjustmentSliderBounds = bounds.removeFromLeft(widthEach);
+    auto orderSliderBounds = bounds.removeFromLeft(widthEach);
+    auto teethSliderBounds = bounds.removeFromLeft(widthEach);
+    auto phaseSliderBounds = bounds.removeFromLeft(widthEach);
+    auto gainSliderBounds = bounds.removeFromLeft(widthEach);
+    
+    pitchAdjustmentSlider.setBounds(pitchAdjustmentSliderBounds);
+    orderSlider.setBounds(orderSliderBounds);
+    teethSlider.setBounds(teethSliderBounds);
+    phaseSlider.setBounds(phaseSliderBounds);
+    gainSlider.setBounds(gainSliderBounds);
 
+}
+
+std::vector<juce::Component*> PolygonalOscComponent::getComps(){
+    return {
+        &pitchAdjustmentSlider,
+        &orderSlider,
+        &teethSlider,
+        &phaseSlider,
+        &gainSlider
+    };
 }

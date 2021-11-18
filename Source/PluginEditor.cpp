@@ -17,7 +17,7 @@ audioProcessor (p),
 adsrVolume(audioProcessor.apvts, "Envelope Attack", "Envelope Decay", "Envelope Sustain", "Envelope Release"),
 adsrMod(audioProcessor.apvts, "Mod Envelope Attack", "Mod Envelope Decay", "Mod Envelope Sustain", "Mod Envelope Release"),
 //osc1(audioProcessor.apvts, "OSC1 Waveform", "OSC1 FM Freq", "OSC1 FM Depth"),
-osc1(audioProcessor.apvts, "OSC1 Gain"),
+osc1(audioProcessor.apvts, "OSC1 Pitch", "OSC1 Order", "OSC1 Teeth", "OSC1 Phase Rotation", "OSC1 Gain"),
 filter(audioProcessor.apvts, "Filter Type", "Filter Freq", "Filter Resonance")
 {
     // Make sure that before the constructor has finished, you've set the
@@ -26,7 +26,7 @@ filter(audioProcessor.apvts, "Filter Type", "Filter Freq", "Filter Resonance")
         addAndMakeVisible(c);
     }
     
-    setSize (600, 400);
+    setSize (800, 600);
 }
 
 PolygonalSynthesizerAudioProcessorEditor::~PolygonalSynthesizerAudioProcessorEditor()
@@ -46,10 +46,11 @@ void PolygonalSynthesizerAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     auto bounds = getLocalBounds();
-    auto envelopeArea = bounds.removeFromTop(bounds.getHeight() * 0.5);
-    auto envelopeVolumeArea = envelopeArea.removeFromLeft(envelopeArea.getWidth() * 0.5);
+    auto mainTopBar = bounds.removeFromTop(bounds.proportionOfHeight(0.1f));
+    auto envelopeArea = bounds.removeFromTop(bounds.proportionOfHeight(0.5f));
+    auto envelopeVolumeArea = envelopeArea.removeFromLeft(envelopeArea.proportionOfWidth(0.5f));
     auto envelopeModArea = envelopeArea;
-    auto oscArea = bounds.removeFromLeft(bounds.getWidth() * 0.5);
+    auto oscArea = bounds.removeFromLeft(bounds.proportionOfWidth(0.5f));
     auto filterArea = bounds;
     
     // Set bounds of Adsr

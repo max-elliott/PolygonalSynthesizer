@@ -43,9 +43,27 @@ void PolygonalOscData::setGain(const float newGain){
     gain.setGainLinear(newGain);
 }
 
-void PolygonalOscData::setParameters(const float newOrder, const float newTeeth){
+void PolygonalOscData::setParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhaseRotation, const float newGain){
+    pitchAdjustment = newPitch;
     order = newOrder;
     teeth = newTeeth;
+    phaseRotation = newPhaseRotation;
+    
+    setFrequency(currentNoteFrequency * pitchAdjustment);
+    updatePhaseDelta();
+    gain.setGainLinear(newGain);
+}
+
+void PolygonalOscData::updatePhaseDelta(){
+    phaseDelta = phaseRotation / getSampleRate() * juce::MathConstants<float>::twoPi;
+}
+
+float PolygonalOscData::updateCurrentPhase(){
+    currentPhase += phaseDelta;
+    if (currentPhase >= juce::MathConstants<float>::twoPi){
+        currentPhase -= juce::MathConstants<float>::twoPi;
+    }
+    return currentPhase;
 }
 
 float PolygonalOscData::getOscSample(const float x){
@@ -55,10 +73,10 @@ float PolygonalOscData::getOscSample(const float x){
     const float twoPi = juce::MathConstants<float>::twoPi;
     const float n = order;
     const float t = teeth;
-    const float phi = phase;
+    const float phi = updateCurrentPhase();
     const float xnOverTwoPi  = (actualPhase * n) / twoPi;
     
 //    float p = std::cos(pi / n) / (std::cos(twoPi / n * (xnOverTwoPi - (long)xnOverTwoPi) - pi / n + t));
     float p = std::cos(pi / n) / (std::cos(twoPi / n * (fmod(xnOverTwoPi, 1)) - (pi / n) + t));
-    return std::cos(actualPhase) * p;
+    return std::cos(actualPhase + phi) * p;
 }

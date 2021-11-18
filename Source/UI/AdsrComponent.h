@@ -30,10 +30,10 @@ public:
 
 private:
     
-    CustomSlider attackSlider;
-    CustomSlider decaySlider;
-    CustomSlider sustainSlider;
-    CustomSlider releaseSlider;
+    CustomHorizontalSlider attackSlider;
+    CustomHorizontalSlider decaySlider;
+    CustomHorizontalSlider sustainSlider;
+    CustomHorizontalSlider releaseSlider;
     
     std::unique_ptr<SliderAttachment> attackSliderAttachment,
     decaySliderAttachment,
