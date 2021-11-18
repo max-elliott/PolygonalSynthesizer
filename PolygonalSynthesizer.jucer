@@ -40,6 +40,10 @@
               file="Source/UI/PolygonalOscComponent.cpp"/>
         <FILE id="m8pQ1Y" name="PolygonalOscComponent.h" compile="0" resource="0"
               file="Source/UI/PolygonalOscComponent.h"/>
+        <FILE id="dRjOxS" name="PolygonDisplayComponent.cpp" compile="1" resource="0"
+              file="Source/UI/PolygonDisplayComponent.cpp"/>
+        <FILE id="dgMPDj" name="PolygonDisplayComponent.h" compile="0" resource="0"
+              file="Source/UI/PolygonDisplayComponent.h"/>
       </GROUP>
       <FILE id="GvA8VT" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

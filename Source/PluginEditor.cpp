@@ -18,7 +18,8 @@ adsrVolume(audioProcessor.apvts, "Envelope Attack", "Envelope Decay", "Envelope 
 adsrMod(audioProcessor.apvts, "Mod Envelope Attack", "Mod Envelope Decay", "Mod Envelope Sustain", "Mod Envelope Release"),
 //osc1(audioProcessor.apvts, "OSC1 Waveform", "OSC1 FM Freq", "OSC1 FM Depth"),
 osc1(audioProcessor.apvts, "OSC1 Pitch", "OSC1 Order", "OSC1 Teeth", "OSC1 Phase Rotation", "OSC1 Gain"),
-filter(audioProcessor.apvts, "Filter Type", "Filter Freq", "Filter Resonance")
+filter(audioProcessor.apvts, "Filter Type", "Filter Freq", "Filter Resonance"),
+display(audioProcessor, "OSC1 Pitch", "OSC1 Order", "OSC1 Teeth", "OSC1 Phase Rotation", "OSC1 Gain")
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -26,7 +27,7 @@ filter(audioProcessor.apvts, "Filter Type", "Filter Freq", "Filter Resonance")
         addAndMakeVisible(c);
     }
     
-    setSize (800, 600);
+    setSize (1200, 600);
 }
 
 PolygonalSynthesizerAudioProcessorEditor::~PolygonalSynthesizerAudioProcessorEditor()
@@ -50,22 +51,18 @@ void PolygonalSynthesizerAudioProcessorEditor::resized()
     
     border.subtractFrom(bounds);
     auto mainTopBar = bounds.removeFromTop(bounds.proportionOfHeight(0.1f));
+    auto displayArea = bounds.removeFromRight(bounds.proportionOfWidth(0.333f));
     auto envelopeArea = bounds.removeFromTop(bounds.proportionOfHeight(0.5f));
     auto envelopeVolumeArea = envelopeArea.removeFromLeft(envelopeArea.proportionOfWidth(0.5f));
     auto envelopeModArea = envelopeArea;
     auto oscArea = bounds.removeFromLeft(bounds.proportionOfWidth(0.5f));
     auto filterArea = bounds;
     
-    // Set bounds of Adsr
     adsrVolume.setBounds(envelopeVolumeArea);
     adsrMod.setBounds(envelopeModArea);
     osc1.setBounds(oscArea);
     filter.setBounds(filterArea);
-    
-    logComponentBounds(adsrMod);
-    if (adsrMod.isVisible()){
-        juce::Logger::writeToLog(juce::String("adsrMod is visible"));
-    }
+    display.setBounds(displayArea);
     
 }
 
@@ -74,6 +71,7 @@ std::vector<juce::Component*> PolygonalSynthesizerAudioProcessorEditor::getComps
         &adsrVolume,
         &adsrMod,
         &osc1,
-        &filter
+        &filter,
+        &display
     };
 }

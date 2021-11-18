@@ -14,6 +14,7 @@
 #include "UI/OscComponent.h"
 #include "UI/FilterComponent.h"
 #include "UI/PolygonalOscComponent.h"
+#include "UI/PolygonDisplayComponent.h"
 
 //==============================================================================
 /**
@@ -39,6 +40,8 @@ private:
     AdsrComponent adsrMod;
     PolygonalOscComponent osc1;
     FilterComponent filter;
+    PolygonDisplayComponent display;
+    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PolygonalSynthesizerAudioProcessorEditor)
 };
