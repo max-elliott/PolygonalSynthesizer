@@ -80,3 +80,19 @@ float PolygonalOscData::getOscSample(const float x){
     float p = std::cos(pi / n) / (std::cos(twoPi / n * (fmod(xnOverTwoPi, 1)) - (pi / n) + t));
     return std::cos(actualPhase + phi) * p;
 }
+
+std::pair<float, float> PolygonalOscData::getOscSamplePair(const float x){
+    
+    const float actualPhase = x + juce::MathConstants<float>::pi;
+    const float pi = juce::MathConstants<float>::pi;
+    const float twoPi = juce::MathConstants<float>::twoPi;
+    const float n = order;
+    const float t = teeth;
+    const float phi = updateCurrentPhase();
+    const float xnOverTwoPi  = (actualPhase * n) / twoPi;
+    
+    //    float p = std::cos(pi / n) / (std::cos(twoPi / n * (xnOverTwoPi - (long)xnOverTwoPi) - pi / n + t));
+    float p = std::cos(pi / n) / (std::cos(twoPi / n * (fmod(xnOverTwoPi, 1)) - (pi / n) + t));
+    float cosValue = std::cos(actualPhase + phi) * p;
+    float sinValue = std::sin(actualPhase + phi) * p;
+}

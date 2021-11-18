@@ -1,3 +1,5 @@
+#include "CustomPhase.h"
+
 namespace juce
 {
 namespace dsp
@@ -16,11 +18,13 @@ namespace dsp
          could be either a primitive or vector)
          */
         using NumericType = typename SampleTypeHelpers::ElementType<SampleType>::Type;
+        using NumericTypeInput = typename SampleTypeHelpers::ElementType<SampleType>::Type;
+        using NumericTypeOtuput = typename std::pair<SampleType, SampleType>;
         
         /** Creates an uninitialised oscillator. Call initialise before first use. */
         CustomOscillator() = default;
         
-        /** Creates an oscillator with a periodic input function (-pi..pi).
+        /** Creates an oscillator with a periodic input function (0, maxPhase).
          
          If lookup table is not zero, then the function will be approximated
          with a lookup table.
@@ -221,7 +225,7 @@ namespace dsp
         Array<NumericType> rampBuffer;
         SmoothedValue<NumericType> frequency { static_cast<NumericType> (440.0) };
         NumericType sampleRate = 48000.0;
-        Phase<NumericType> phase;
+        EndlessPhase<NumericType> phase;
     };
     
 } // namespace dsp

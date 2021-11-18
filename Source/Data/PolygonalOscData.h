@@ -18,11 +18,12 @@ public:
     void prepareToPlay(juce::dsp::ProcessSpec& spec);
     void processNextAudioBlock(juce::dsp::AudioBlock<float> audioBlock);
     void setWaveFrequency(const int midiNoteNumber);
+    void updatePhaseDelta();
+    float updateCurrentPhase();
     void setGain(const float newGain);
     void setParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhase, const float newGain);
     float getOscSample(const float x);
-    void updatePhaseDelta();
-    float updateCurrentPhase();
+    std::pair<float, float> getOscSamplePair(const float x);
     
 private:
 //    juce::dsp::Oscillator<float> fmOsc{[](float x){return std::sin(x);}};
