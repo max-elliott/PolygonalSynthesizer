@@ -17,7 +17,7 @@ void PolygonalOscData::prepareToPlay(juce::dsp::ProcessSpec& spec){
     gain.prepare(spec);
     gain.setGainLinear(1.0f);
     prepare(spec);
-    initialise([&](float x){return getOscSample(x);});
+    initialise([&](float x){return getOscSamplePair(x);});
     
     isPrepared = true;
 }
@@ -91,8 +91,8 @@ std::pair<float, float> PolygonalOscData::getOscSamplePair(const float x){
     const float phi = updateCurrentPhase();
     const float xnOverTwoPi  = (actualPhase * n) / twoPi;
     
-    //    float p = std::cos(pi / n) / (std::cos(twoPi / n * (xnOverTwoPi - (long)xnOverTwoPi) - pi / n + t));
     float p = std::cos(pi / n) / (std::cos(twoPi / n * (fmod(xnOverTwoPi, 1)) - (pi / n) + t));
     float cosValue = std::cos(actualPhase + phi) * p;
     float sinValue = std::sin(actualPhase + phi) * p;
+    return std::make_pair(cosValue, sinValue);
 }

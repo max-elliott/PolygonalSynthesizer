@@ -19,43 +19,56 @@ namespace dsp
          */
         using NumericType = typename SampleTypeHelpers::ElementType<SampleType>::Type;
         using NumericTypeInput = typename SampleTypeHelpers::ElementType<SampleType>::Type;
-        using NumericTypeOtuput = typename std::pair<SampleType, SampleType>;
+        using NumericTypeOutput = typename std::pair<NumericType, NumericType>;
         
         /** Creates an uninitialised oscillator. Call initialise before first use. */
         CustomOscillator() = default;
         
-        /** Creates an oscillator with a periodic input function (0, maxPhase).
+        /** Creates an oscillator with a periodic input function (0, maxPhase).**/
          
-         If lookup table is not zero, then the function will be approximated
-         with a lookup table.
-         */
-        CustomOscillator (const std::function<NumericType (NumericType)>& function,
-                    size_t lookupTableNumPoints = 0)
+        // MONO VERSION
+//        CustomOscillator (const std::function<NumericType (NumericType)>& function,
+//                    size_t lookupTableNumPoints = 0)
+//        {
+//            initialise (function, lookupTableNumPoints);
+//        }
+        
+        // STEREO VERSION
+        CustomOscillator (const std::function<NumericTypeOutput (NumericTypeInput)>& function,
+                          size_t lookupTableNumPoints = 0)
         {
-            initialise (function, lookupTableNumPoints);
+            initialise (function);
         }
         
         /** Returns true if the Oscillator has been initialised. */
         bool isInitialised() const noexcept     { return static_cast<bool> (generator); }
         
+        // MONO VERSION
         /** Initialises the oscillator with a waveform. */
-        void initialise (const std::function<NumericType (NumericType)>& function,
-                         size_t lookupTableNumPoints = 0)
+//        void initialise (const std::function<NumericType (NumericType)>& function,
+//                         size_t lookupTableNumPoints = 0)
+//        {
+//            if (lookupTableNumPoints != 0)
+//            {
+//                auto* table = new LookupTableTransform<NumericType> (function,
+//                                                                     -MathConstants<NumericType>::pi,
+//                                                                     MathConstants<NumericType>::pi,
+//                                                                     lookupTableNumPoints);
+//
+//                lookupTable.reset (table);
+//                generator = [table] (NumericType x) { return (*table) (x); };
+//            }
+//            else
+//            {
+//                generator = function;
+//            }
+//        }
+        
+        // STEREO VERSION
+        /** Initialises the oscillator with a waveform. */
+        void initialise (const std::function<NumericTypeOutput (NumericTypeInput)>& function)
         {
-            if (lookupTableNumPoints != 0)
-            {
-                auto* table = new LookupTableTransform<NumericType> (function,
-                                                                     -MathConstants<NumericType>::pi,
-                                                                     MathConstants<NumericType>::pi,
-                                                                     lookupTableNumPoints);
-                
-                lookupTable.reset (table);
-                generator = [table] (NumericType x) { return (*table) (x); };
-            }
-            else
-            {
-                generator = function;
-            }
+            generator = function;
         }
         
         //==============================================================================
@@ -102,6 +115,123 @@ namespace dsp
             return input + generator (phase.advance (increment) - MathConstants<NumericType>::pi);
         }
         
+        // MONO VERSION
+        /** Processes the input and output buffers supplied in the processing context. */
+//        template <typename ProcessContext>
+//        void process (const ProcessContext& context) noexcept
+//        {
+//            jassert (isInitialised());
+//            auto&& outBlock = context.getOutputBlock();
+//            auto&& inBlock  = context.getInputBlock();
+//
+//            // this is an output-only processor
+//            jassert (outBlock.getNumSamples() <= static_cast<size_t> (rampBuffer.size()));
+//
+//            auto len           = outBlock.getNumSamples();
+//            auto numChannels   = outBlock.getNumChannels();
+//            auto inputChannels = inBlock.getNumChannels();
+//            auto baseIncrement = MathConstants<NumericType>::twoPi / sampleRate;
+//
+//            if (context.isBypassed)
+//                context.getOutputBlock().clear();
+//
+//            if (frequency.isSmoothing())
+//            {
+//                auto* buffer = rampBuffer.getRawDataPointer();
+//
+//                for (size_t i = 0; i < len; ++i)
+//                    buffer[i] = phase.advance (baseIncrement * frequency.getNextValue())
+//                    - MathConstants<NumericType>::pi;
+//
+//                if (! context.isBypassed)
+//                {
+//                    size_t ch;
+//
+//                    if (context.usesSeparateInputAndOutputBlocks())
+//                    {
+//                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
+//                        {
+//                            auto* dst = outBlock.getChannelPointer (ch);
+//                            auto* src = inBlock.getChannelPointer (ch);
+//
+//                            for (size_t i = 0; i < len; ++i)
+//                                dst[i] = src[i] + generator (buffer[i]);
+//                        }
+//                    }
+//                    else
+//                    {
+//                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
+//                        {
+//                            auto* dst = outBlock.getChannelPointer (ch);
+//
+//                            for (size_t i = 0; i < len; ++i)
+//                                dst[i] += generator (buffer[i]);
+//                        }
+//                    }
+//
+//                    for (; ch < numChannels; ++ch)
+//                    {
+//                        auto* dst = outBlock.getChannelPointer (ch);
+//
+//                        for (size_t i = 0; i < len; ++i)
+//                            dst[i] = generator (buffer[i]);
+//                    }
+//                }
+//            }
+//            else
+//            {
+//                auto freq = baseIncrement * frequency.getNextValue();
+//                auto p = phase;
+//
+//                if (context.isBypassed)
+//                {
+//                    frequency.skip (static_cast<int> (len));
+//                    p.advance (freq * static_cast<NumericType> (len));
+//                }
+//                else
+//                {
+//                    size_t ch;
+//
+//                    if (context.usesSeparateInputAndOutputBlocks())
+//                    {
+//                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
+//                        {
+//                            p = phase;
+//                            auto* dst = outBlock.getChannelPointer (ch);
+//                            auto* src = inBlock.getChannelPointer (ch);
+//
+//                            for (size_t i = 0; i < len; ++i)
+//                                dst[i] = src[i] + generator (p.advance (freq) - MathConstants<NumericType>::pi);
+//                        }
+//                    }
+//                    else
+//                    {
+//                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
+//                        {
+//                            p = phase;
+//                            auto* dst = outBlock.getChannelPointer (ch);
+//
+//
+//                            for (size_t i = 0; i < len; ++i)
+//                                dst[i] += generator (p.advance (freq) - MathConstants<NumericType>::pi);
+//                        }
+//                    }
+//
+//                    for (; ch < numChannels; ++ch)
+//                    {
+//                        p = phase;
+//                        auto* dst = outBlock.getChannelPointer (ch);
+//
+//                        for (size_t i = 0; i < len; ++i)
+//                            dst[i] = generator (p.advance (freq) - MathConstants<NumericType>::pi);
+//                    }
+//                }
+//
+//                phase = p;
+//            }
+//        }
+        
+        // STEREO VERSION
         /** Processes the input and output buffers supplied in the processing context. */
         template <typename ProcessContext>
         void process (const ProcessContext& context) noexcept
@@ -117,6 +247,8 @@ namespace dsp
             auto numChannels   = outBlock.getNumChannels();
             auto inputChannels = inBlock.getNumChannels();
             auto baseIncrement = MathConstants<NumericType>::twoPi / sampleRate;
+            
+            jassert (numChannels >= 2);
             
             if (context.isBypassed)
                 context.getOutputBlock().clear();
@@ -135,32 +267,45 @@ namespace dsp
                     
                     if (context.usesSeparateInputAndOutputBlocks())
                     {
-                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
-                        {
-                            auto* dst = outBlock.getChannelPointer (ch);
-                            auto* src = inBlock.getChannelPointer (ch);
-                            
-                            for (size_t i = 0; i < len; ++i)
-                                dst[i] = src[i] + generator (buffer[i]);
+//                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
+//                        {
+//                            auto* dst = outBlock.getChannelPointer (ch);
+//                            auto* src = inBlock.getChannelPointer (ch);
+//
+//                            for (size_t i = 0; i < len; ++i)
+//                                dst[i] = src[i] + generator (buffer[i]);
+//                        }
+                        
+//                        p = phase;
+                        auto* dstLeft = outBlock.getChannelPointer (0);
+                        auto* dstRight = outBlock.getChannelPointer (1);
+                        auto* srcLeft = inBlock.getChannelPointer (0);
+                        auto* srcRight = inBlock.getChannelPointer (1);
+                        
+                        for (size_t i = 0; i < len; ++i){
+                            NumericTypeOutput currentSample = generator(buffer[i]);
+                            dstLeft[i] = srcLeft[i] + currentSample.first;
+                            dstRight[i] = srcRight[i] + currentSample.second;
                         }
                     }
                     else
                     {
-                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
-                        {
-                            auto* dst = outBlock.getChannelPointer (ch);
-                            
-                            for (size_t i = 0; i < len; ++i)
-                                dst[i] += generator (buffer[i]);
+                        auto* dstLeft = outBlock.getChannelPointer (0);
+                        auto* dstRight = outBlock.getChannelPointer (1);
+                        
+                        for (size_t i = 0; i < len; ++i){
+                            NumericTypeOutput currentSample = generator(buffer[i]);
+                            dstLeft[i] += currentSample.first;
+                            dstRight[i] += currentSample.second;
                         }
                     }
                     
-                    for (; ch < numChannels; ++ch)
+                    for (ch = 2; ch < numChannels; ++ch)
                     {
                         auto* dst = outBlock.getChannelPointer (ch);
                         
                         for (size_t i = 0; i < len; ++i)
-                            dst[i] = generator (buffer[i]);
+                            dst[i] = NumericType(0);
                     }
                 }
             }
@@ -180,35 +325,39 @@ namespace dsp
                     
                     if (context.usesSeparateInputAndOutputBlocks())
                     {
-                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
-                        {
-                            p = phase;
-                            auto* dst = outBlock.getChannelPointer (ch);
-                            auto* src = inBlock.getChannelPointer (ch);
-                            
-                            for (size_t i = 0; i < len; ++i)
-                                dst[i] = src[i] + generator (p.advance (freq) - MathConstants<NumericType>::pi);
+                        p = phase;
+                        auto* dstLeft = outBlock.getChannelPointer (0);
+                        auto* dstRight = outBlock.getChannelPointer (1);
+                        auto* srcLeft = inBlock.getChannelPointer (0);
+                        auto* srcRight = inBlock.getChannelPointer (1);
+                        
+                        for (size_t i = 0; i < len; ++i){
+                            NumericTypeOutput currentSample = generator(p.advance (freq) - MathConstants<NumericType>::pi);
+                            dstLeft[i] = srcLeft[i] + currentSample.first;
+                            dstRight[i] = srcRight[i] + currentSample.second;
                         }
                     }
                     else
                     {
-                        for (ch = 0; ch < jmin (numChannels, inputChannels); ++ch)
-                        {
-                            p = phase;
-                            auto* dst = outBlock.getChannelPointer (ch);
-                            
-                            for (size_t i = 0; i < len; ++i)
-                                dst[i] += generator (p.advance (freq) - MathConstants<NumericType>::pi);
+                        p = phase;
+                        auto* dstLeft = outBlock.getChannelPointer (0);
+                        auto* dstRight = outBlock.getChannelPointer (1);
+                        
+                        for (size_t i = 0; i < len; ++i){
+                            NumericTypeOutput currentSample = generator(p.advance (freq) - MathConstants<NumericType>::pi);
+                            dstLeft[i] += currentSample.first;
+                            dstRight[i] += currentSample.second;
                         }
+
                     }
                     
-                    for (; ch < numChannels; ++ch)
+                    for (ch = 2; ch < numChannels; ++ch)
                     {
                         p = phase;
                         auto* dst = outBlock.getChannelPointer (ch);
                         
                         for (size_t i = 0; i < len; ++i)
-                            dst[i] = generator (p.advance (freq) - MathConstants<NumericType>::pi);
+                            dst[i] = NumericType(0);
                     }
                 }
                 
@@ -220,7 +369,7 @@ namespace dsp
         
     private:
         //==============================================================================
-        std::function<NumericType (NumericType)> generator;
+        std::function<NumericTypeOutput (NumericTypeInput)> generator;
         std::unique_ptr<LookupTableTransform<NumericType>> lookupTable;
         Array<NumericType> rampBuffer;
         SmoothedValue<NumericType> frequency { static_cast<NumericType> (440.0) };
