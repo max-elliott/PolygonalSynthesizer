@@ -12,13 +12,14 @@
 #include "PolygonalOscComponent.h"
 
 //==============================================================================
-PolygonalOscComponent::PolygonalOscComponent(APVTS& apvts, juce::String pitchId, juce::String orderId, juce::String teethId, juce::String phaseId, juce::String gainId)
+PolygonalOscComponent::PolygonalOscComponent(APVTS& apvts, juce::String pitchId, juce::String orderId, juce::String teethId, juce::String phaseId, juce::String gainId, juce::String monoId)
 :
 pitchAdjustmentSliderAttachment(std::make_unique<SliderAttachment>(apvts, pitchId, pitchAdjustmentSlider)),
 orderSliderAttachment(std::make_unique<SliderAttachment>(apvts, orderId, orderSlider)),
 teethSliderAttachment(std::make_unique<SliderAttachment>(apvts, teethId, teethSlider)),
 phaseSliderAttachment(std::make_unique<SliderAttachment>(apvts, phaseId, phaseSlider)),
-gainSliderAttachment(std::make_unique<SliderAttachment>(apvts, gainId, gainSlider))
+gainSliderAttachment(std::make_unique<SliderAttachment>(apvts, gainId, gainSlider)),
+monoButtonAttachment(std::make_unique<ButtonAttachment>(apvts, monoId, monoButton))
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
@@ -53,6 +54,7 @@ void PolygonalOscComponent::resized()
     auto widthEach = bounds.proportionOfWidth(1.0f / float(numSliders));
     
     auto pitchAdjustmentSliderBounds = bounds.removeFromLeft(widthEach);
+    auto monoButtonBounds = pitchAdjustmentSliderBounds.removeFromBottom(pitchAdjustmentSliderBounds.proportionOfHeight(0.25f));
     auto orderSliderBounds = bounds.removeFromLeft(widthEach);
     auto teethSliderBounds = bounds.removeFromLeft(widthEach);
     auto phaseSliderBounds = bounds.removeFromLeft(widthEach);
@@ -63,6 +65,7 @@ void PolygonalOscComponent::resized()
     teethSlider.setBounds(teethSliderBounds);
     phaseSlider.setBounds(phaseSliderBounds);
     gainSlider.setBounds(gainSliderBounds);
+    monoButton.setBounds(monoButtonBounds);
 
 }
 
@@ -72,6 +75,7 @@ std::vector<juce::Component*> PolygonalOscComponent::getComps(){
         &orderSlider,
         &teethSlider,
         &phaseSlider,
-        &gainSlider
+        &gainSlider,
+        &monoButton
     };
 }

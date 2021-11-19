@@ -17,7 +17,7 @@ audioProcessor (p),
 adsrVolume(audioProcessor.apvts, "Envelope Attack", "Envelope Decay", "Envelope Sustain", "Envelope Release"),
 adsrMod(audioProcessor.apvts, "Mod Envelope Attack", "Mod Envelope Decay", "Mod Envelope Sustain", "Mod Envelope Release"),
 //osc1(audioProcessor.apvts, "OSC1 Waveform", "OSC1 FM Freq", "OSC1 FM Depth"),
-osc1(audioProcessor.apvts, "OSC1 Pitch", "OSC1 Order", "OSC1 Teeth", "OSC1 Phase Rotation", "OSC1 Gain"),
+osc1(audioProcessor.apvts, "OSC1 Pitch", "OSC1 Order", "OSC1 Teeth", "OSC1 Phase Rotation", "OSC1 Gain", "OSC1 Mono"),
 filter(audioProcessor.apvts, "Filter Type", "Filter Freq", "Filter Resonance"),
 display(audioProcessor, "OSC1 Pitch", "OSC1 Order", "OSC1 Teeth", "OSC1 Phase Rotation", "OSC1 Gain")
 {

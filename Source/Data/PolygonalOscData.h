@@ -21,7 +21,7 @@ public:
     void updatePhaseDelta();
     float updateCurrentPhase();
     void setGain(const float newGain);
-    void setParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhase, const float newGain);
+    void setParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhase, const float newGain, const bool newMono);
     float getOscSample(const float x);
     std::pair<float, float> getOscSamplePair(const float x);
     

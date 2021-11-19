@@ -16,6 +16,7 @@
 using APVTS = juce::AudioProcessorValueTreeState;
 using ComboBoxAttachment = APVTS::ComboBoxAttachment;
 using SliderAttachment = APVTS::SliderAttachment;
+using ButtonAttachment = APVTS::ButtonAttachment;
 
 //==============================================================================
 /*
@@ -23,7 +24,7 @@ using SliderAttachment = APVTS::SliderAttachment;
 class PolygonalOscComponent  : public juce::Component
 {
 public:
-    PolygonalOscComponent(APVTS& apvts, juce::String pitchId, juce::String orderId, juce::String teethId, juce::String phaseId, juce::String gainId);
+    PolygonalOscComponent(APVTS& apvts, juce::String pitchId, juce::String orderId, juce::String teethId, juce::String phaseId, juce::String gainId, juce::String monoId);
     ~PolygonalOscComponent() override;
 
     void paint (juce::Graphics&) override;
@@ -35,12 +36,14 @@ private:
     CustomVerticalSlider teethSlider;
     CustomVerticalSlider phaseSlider;
     CustomVerticalSlider gainSlider;
+    juce::ToggleButton monoButton;
     
     std::unique_ptr<SliderAttachment> pitchAdjustmentSliderAttachment;
     std::unique_ptr<SliderAttachment> orderSliderAttachment;
     std::unique_ptr<SliderAttachment> teethSliderAttachment;
     std::unique_ptr<SliderAttachment> phaseSliderAttachment;
     std::unique_ptr<SliderAttachment> gainSliderAttachment;
+    std::unique_ptr<ButtonAttachment> monoButtonAttachment;
     
     std::vector<juce::Component*> getComps();
     

@@ -246,6 +246,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
                                                            "OSC1 Phase Rotation",
                                                            juce::NormalisableRange<float>{0.0f, 5.0f, 0.1f, 1.0f},
                                                            0.0f));
+    // OSC1 Mono - bool
+    layout.add(std::make_unique<juce::AudioParameterBool>("OSC1 Mono",
+                                                          "OSC1 Mono",
+                                                          false));
     // Attack - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
                                                                  "Envelope Attack",
@@ -326,15 +330,12 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             auto& modSustain = *apvts.getRawParameterValue ("Mod Envelope Sustain");
             auto& modRelease = *apvts.getRawParameterValue ("Mod Envelope Release");
             
-            auto& osc1WaveChoice = *apvts.getRawParameterValue("OSC1 Waveform");
-            auto& osc1FmFreq = *apvts.getRawParameterValue("OSC1 FM Freq");
-            auto& osc1FmDepth = *apvts.getRawParameterValue("OSC1 FM Depth");
-            
             auto& osc1PitchAdjustment = *apvts.getRawParameterValue("OSC1 Pitch");
             auto& osc1Order = *apvts.getRawParameterValue("OSC1 Order");
             auto& osc1Teeth = *apvts.getRawParameterValue("OSC1 Teeth");
             auto& osc1PhaseRotation = *apvts.getRawParameterValue("OSC1 Phase Rotation");
             auto& osc1Gain = *apvts.getRawParameterValue("OSC1 Gain");
+            auto& osc1Mono = *apvts.getRawParameterValue("OSC1 Mono");
             
             auto& filterType = *apvts.getRawParameterValue ("Filter Type");
             auto& filterFrequency = *apvts.getRawParameterValue ("Filter Freq");
@@ -345,9 +346,7 @@ void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
             voice->updateADSRMod(modAttack.load(), modDecay.load(), modSustain.load(), modRelease.load());
             voice->updateFilter(filterType.load(), filterFrequency.load(), filterResonance.load());
             voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
-            voice->setOscillatorParameters(osc1PitchAdjustment.load(), osc1Order.load(), osc1Teeth.load(), osc1PhaseRotation.load(), osc1Gain.load());
-//            voice->getOscillator().setFmParams(osc1FmDepth, osc1FmFreq);
-//            voice->getOscillator().setWaveType(osc1WaveChoice);
+            voice->setOscillatorParameters(osc1PitchAdjustment.load(), osc1Order.load(), osc1Teeth.load(), osc1PhaseRotation.load(), osc1Gain.load(), osc1Mono.load());
         }
         
     }

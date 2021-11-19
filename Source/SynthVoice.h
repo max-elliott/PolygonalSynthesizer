@@ -36,7 +36,7 @@ public:
     void updateADSR(const float a, const float d, const float s, const float r);
     void updateFilter(const int type, const float frequency, const float resonance);
     void updateADSRMod(const float a, const float d, const float s, const float r);
-    void setOscillatorParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhase, const float newGain);
+    void setOscillatorParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhase, const float newGain, const bool newMono);
     
     AdsrData& getADSR(){return adsr;}
     AdsrData& getADSRMod(){return adsrMod;}

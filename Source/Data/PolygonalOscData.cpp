@@ -43,11 +43,12 @@ void PolygonalOscData::setGain(const float newGain){
     gain.setGainLinear(newGain);
 }
 
-void PolygonalOscData::setParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhaseRotation, const float newGain){
+void PolygonalOscData::setParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhaseRotation, const float newGain, const bool newMono){
     pitchAdjustment = newPitch;
     order = newOrder;
     teeth = newTeeth;
     phaseRotation = newPhaseRotation;
+    setMono(newMono);
     
     setFrequency(currentNoteFrequency * pitchAdjustment);
     updatePhaseDelta();

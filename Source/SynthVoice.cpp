@@ -103,7 +103,7 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int st
     }
 }
 
-void SynthVoice::setOscillatorParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhase, const float newGain){
-    osc.setParameters(newPitch, newOrder, newTeeth, newPhase, newGain * currentVelocity);
+void SynthVoice::setOscillatorParameters(const float newPitch, const float newOrder, const float newTeeth, const float newPhase, const float newGain, const bool newMono){
+    osc.setParameters(newPitch, newOrder, newTeeth, newPhase, newGain * currentVelocity, newMono);
 }
 
