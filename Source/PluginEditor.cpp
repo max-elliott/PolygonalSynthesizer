@@ -47,11 +47,12 @@ void PolygonalSynthesizerAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     auto bounds = getLocalBounds();
-    juce::BorderSize<int> border(bounds.proportionOfHeight(0.1), bounds.proportionOfWidth(0.1), bounds.proportionOfHeight(0.1), bounds.proportionOfWidth(0.1));
+    const double borderWidth = 0.05;
+    juce::BorderSize<int> border(bounds.proportionOfHeight(borderWidth), bounds.proportionOfWidth(borderWidth), bounds.proportionOfHeight(borderWidth), bounds.proportionOfWidth(borderWidth));
     
     border.subtractFrom(bounds);
     auto mainTopBar = bounds.removeFromTop(bounds.proportionOfHeight(0.1f));
-    auto displayArea = bounds.removeFromRight(bounds.proportionOfWidth(0.333f));
+    auto displayArea = bounds.removeFromRight(bounds.proportionOfWidth(0.5f));
     auto envelopeArea = bounds.removeFromTop(bounds.proportionOfHeight(0.5f));
     auto envelopeVolumeArea = envelopeArea.removeFromLeft(envelopeArea.proportionOfWidth(0.5f));
     auto envelopeModArea = envelopeArea;

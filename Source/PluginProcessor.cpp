@@ -224,7 +224,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
     // Osc1 Pitch Adjustment - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Pitch",
                                                            "OSC1 Pitch",
-                                                           juce::NormalisableRange<float>{0.25f, 4.0f, 0.01f, 1.0f},
+                                                           juce::NormalisableRange<float>{0.25f, 4.0f, 0.001f, 1.0f},
                                                            1.0f));
     // Osc1 Gain - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Gain",
@@ -234,7 +234,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
     // Osc1 Order - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Order",
                                                            "OSC1 Order",
-                                                           juce::NormalisableRange<float>{2.1f, 20.0f, 0.1f, 0.33f},
+                                                           juce::NormalisableRange<float>{2.1f, 20.0f, 0.001f, 0.33f},
                                                            4.0f));
     // Osc1 Teeth - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Teeth",
@@ -244,7 +244,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioPro
     // Osc1 Gain - float
     layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Phase Rotation",
                                                            "OSC1 Phase Rotation",
-                                                           juce::NormalisableRange<float>{0.0f, 5.0f, 0.1f, 1.0f},
+                                                           juce::NormalisableRange<float>{0.0f, 5.0f, 0.01f, 1.0f},
                                                            0.0f));
     // OSC1 Mono - bool
     layout.add(std::make_unique<juce::AudioParameterBool>("OSC1 Mono",
