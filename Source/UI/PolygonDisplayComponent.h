@@ -35,6 +35,7 @@ public:
 
 private:
     const int numSamplesPerRotation = 250;
+    const int rotationsDrawn = 5;
     juce::Atomic<bool> parametersChanged{false};
     juce::String orderId, teethId;
     float order, teeth;

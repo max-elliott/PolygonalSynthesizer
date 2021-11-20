@@ -111,7 +111,7 @@ void PolygonDisplayComponent::paint (juce::Graphics& g)
     
     polygonPath.startNewSubPath(mapX(waveformPoints[0].first), mapY(waveformPoints[0].second));
     
-    for (int p=1; p < numSamplesPerRotation; p++){
+    for (int p=1; p < waveformPoints.size(); p++){
         polygonPath.lineTo(mapX(waveformPoints[p].first), mapY(waveformPoints[p].second));
     }
     
@@ -131,7 +131,7 @@ std::vector<std::pair<float, float>> PolygonDisplayComponent::generateWaveformPo
     
     std::vector<std::pair<float, float>> output;
     
-    for(int i=0; i < numSamplesPerRotation; i++){
+    for(int i=0; i < numSamplesPerRotation * rotationsDrawn; i++){
         
         const float actualPhase = float(i) / numSamplesPerRotation * juce::MathConstants<float>::twoPi;
         const float pi = juce::MathConstants<float>::pi;
@@ -148,5 +148,6 @@ std::vector<std::pair<float, float>> PolygonDisplayComponent::generateWaveformPo
         
         output.push_back(std::make_pair(cosValue, sinValue));
     }
+//    std::cout << output.size() << std::endl;
     return output;
 }
