@@ -50,6 +50,14 @@ void PolygonalOscData::setParameters(const float newPitch, const float newOrder,
     phaseRotation = newPhaseRotation;
     setMono(newMono);
     
+    int numRotationsNeeded = 1;
+    if (ceilf(order) != order){
+        numRotationsNeeded = int(1.0f / fmod(order, 1));
+    }
+    
+    phase.maxRotations = numRotationsNeeded;
+    std::cout << numRotationsNeeded << std::endl;
+    
     setFrequency(currentNoteFrequency * pitchAdjustment);
     updatePhaseDelta();
     gain.setGainLinear(newGain);

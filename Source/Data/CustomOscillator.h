@@ -318,6 +318,8 @@ namespace dsp
         
         bool setMono(const bool newMono){mono = newMono;}
         
+        EndlessPhase<NumericType> phase;
+        
     private:
         //==============================================================================
         std::function<NumericTypeOutput (NumericTypeInput)> generator;
@@ -325,7 +327,6 @@ namespace dsp
         Array<NumericType> rampBuffer;
         SmoothedValue<NumericType> frequency { static_cast<NumericType> (440.0) };
         NumericType sampleRate = 48000.0;
-        EndlessPhase<NumericType> phase;
         bool mono = false;
     };
 

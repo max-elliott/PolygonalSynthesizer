@@ -28,6 +28,8 @@ namespace dsp
             auto last = phase;
             auto next = last + increment;
             
+            auto maxPhase = maxRotations * juce::MathConstants<float>::twoPi;
+            
             while (next >= maxPhase)
                 next -= maxPhase;
             
@@ -36,7 +38,7 @@ namespace dsp
         }
         
         Type phase = 0;
-        Type maxPhase = 100 * MathConstants<Type>::twoPi;
+        Type maxRotations = 100;
     };
     
 } // namespace dsp
