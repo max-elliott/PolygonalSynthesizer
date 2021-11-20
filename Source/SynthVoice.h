@@ -29,6 +29,8 @@ public:
     
     void controllerMoved (int controllerNumber, int newControllerValue) override;
     
+    void aftertouchChanged(int newAftertouchValue) override;
+    
     void prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels);
     
     void renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;

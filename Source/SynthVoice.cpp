@@ -38,6 +38,10 @@ void SynthVoice::controllerMoved (int controllerNumber, int newControllerValue){
     
 }
 
+void SynthVoice::aftertouchChanged(int newAftertouchValue){
+    
+}
+
 void SynthVoice::updateADSR(const float a, const float d, const float s, const float r){
     adsr.updateParameters(a, d, s, r);
 }
