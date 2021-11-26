@@ -23,8 +23,8 @@ audioProcessor(audioProcessor)
         param->addListener(this);
     }
     
-    order = 4.0f;
-    teeth = 0.0f;
+    order = audioProcessor.apvts.getRawParameterValue(orderId)->load();
+    teeth = audioProcessor.apvts.getRawParameterValue(teethId)->load();
     
     startTimerHz(60);
 
@@ -109,6 +109,8 @@ void PolygonDisplayComponent::paint (juce::Graphics& g)
     
     Path polygonPath;
     
+    std::cout << waveformPoints[0].first << ", " << waveformPoints[0].second << std::endl;
+    
     polygonPath.startNewSubPath(mapX(waveformPoints[0].first), mapY(waveformPoints[0].second));
     
     for (int p=1; p < waveformPoints.size(); p++){
@@ -117,6 +119,14 @@ void PolygonDisplayComponent::paint (juce::Graphics& g)
     
     g.setColour(Colours::white);
     g.strokePath(polygonPath, PathStrokeType(2.f));
+    
+    g.setColour(Colours::red);
+    auto lastPoint = waveformPoints[waveformPoints.size() - 1];
+    Rectangle<int> lastPointRectangle(int(mapX(lastPoint.first)),
+                                      int(mapY(lastPoint.second)),
+                                      2,
+                                      2);
+    g.fillRect(lastPointRectangle);
     
 }
 
@@ -127,26 +137,31 @@ void PolygonDisplayComponent::resized()
 
 }
 
+std::pair<float, float> PolygonDisplayComponent::generateNextWaveformPoint(const float actualPhase){
+
+    const float pi = juce::MathConstants<float>::pi;
+    const float twoPi = juce::MathConstants<float>::twoPi;
+    const float n = order;
+    const float t = teeth;
+    const float phi = 0;
+    const float xnOverTwoPi  = (actualPhase * n) / twoPi;
+    
+    //    float p = std::cos(pi / n) / (std::cos(twoPi / n * (xnOverTwoPi - (long)xnOverTwoPi) - pi / n + t));
+    float p = std::cos(pi / n) / (std::cos(twoPi / n * (fmod(xnOverTwoPi, 1)) - (pi / n) + t));
+    float cosValue = std::cos(actualPhase + phi) * p;
+    float sinValue = std::sin(actualPhase + phi) * p;
+    
+    return std::make_pair(cosValue, sinValue);
+}
+
 std::vector<std::pair<float, float>> PolygonDisplayComponent::generateWaveformPoints(){
     
     std::vector<std::pair<float, float>> output;
     
     for(int i=0; i < numSamplesPerRotation * rotationsDrawn; i++){
-        
         const float actualPhase = float(i) / numSamplesPerRotation * juce::MathConstants<float>::twoPi;
-        const float pi = juce::MathConstants<float>::pi;
-        const float twoPi = juce::MathConstants<float>::twoPi;
-        const float n = order;
-        const float t = teeth;
-        const float phi = 0;
-        const float xnOverTwoPi  = (actualPhase * n) / twoPi;
-        
-        //    float p = std::cos(pi / n) / (std::cos(twoPi / n * (xnOverTwoPi - (long)xnOverTwoPi) - pi / n + t));
-        float p = std::cos(pi / n) / (std::cos(twoPi / n * (fmod(xnOverTwoPi, 1)) - (pi / n) + t));
-        float cosValue = std::cos(actualPhase + phi) * p;
-        float sinValue = std::sin(actualPhase + phi) * p;
-        
-        output.push_back(std::make_pair(cosValue, sinValue));
+        auto nextSample = generateNextWaveformPoint(actualPhase);
+        output.push_back(nextSample);
     }
 //    std::cout << output.size() << std::endl;
     return output;

@@ -31,6 +31,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     
+    std::pair<float, float> generateNextWaveformPoint(const float actualPhase);
     std::vector<std::pair<float, float>> generateWaveformPoints();
 
 private:

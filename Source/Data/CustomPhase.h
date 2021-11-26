@@ -38,7 +38,7 @@ namespace dsp
         }
         
         Type phase = 0;
-        Type maxRotations = 100;
+        Type maxRotations = 1000;
     };
     
 } // namespace dsp
