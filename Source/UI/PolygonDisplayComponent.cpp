@@ -23,8 +23,8 @@ audioProcessor(audioProcessor)
         param->addListener(this);
     }
     
-    order = 4.0f;
-    teeth = 0.0f;
+    order = audioProcessor.apvts.getRawParameterValue(orderId)->load();
+    teeth = audioProcessor.apvts.getRawParameterValue(teethId)->load();
     
     startTimerHz(60);
 
