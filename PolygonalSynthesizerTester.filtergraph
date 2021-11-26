@@ -65,9 +65,9 @@
           uiLastY_Normal="317" uiopen_Normal="0">
     <PLUGIN name="AUAudioFilePlayer" format="AudioUnit" category="Generator"
             manufacturer="Apple" version="1.6.0" file="AudioUnit:Generators/augn,afpl,appl"
-            uid="6163676e" isInstrument="0" fileTime="0" infoUpdateTime="17d006ccac3"
+            uid="6163676e" isInstrument="0" fileTime="0" infoUpdateTime="17d0587f1f7"
             numInputs="0" numOutputs="2" isShell="0"/>
-    <STATE>569.hAGaoMGcv.C1AHv.DTfAGfPBJr.Gc3wGgvUag4VclE1XzUmbkIGUjEFcg8EDarVPUAkbkMWYzAUYxMWZyQWYtQ2TzEFcksTY4c0b0IFc4AWYWYWYxMWZu4FUzkGbk8EDOXVZrUVKxUlYkIWYtMVYyQkag0VYRDFbvwFPgxvzM3vCPDwEXYTZrUlSg0VYWIUYmk1atMmWIM2TkwVYiQWYjYTZrU1WPrzKUMWYxM2KMEFduPzaiUWak4Fcy8hTkEFbkIGHPI2apU1XzM2KI0FbkIWZgw1KS8VakQVX4AhXkEFcc80bzUVay8EQxUWay4xcgYWnRP8DTTgEWfwEZ3kTkcVZu4FQuU1bL81avokTkcVZu4FQgQWXeAADIM2TkwVYiQWYjIUYmk1atokTkcVZu4lSg0VYI7DDvA...........GtjQd+e...vnRJ..AF....Nh...fA...GtjQd+e...vnRJ..AF..D..........A...............................................................gdu..7++eGTBZ4TY2AhTkcVZu4VBRDlYvwFD.HQX0claQCBDVYTZrUFHwfUUtQWZzwVYjA.B.jA.l.vJ.jD.QAPV.3E.vAPc.nG.6APe.PH.MBPk.PJ.xC.8.ze.LDvEAnR.0DfMAjZ.pFPsAXa.6FPuAHb.EG.y........BD..........h...................ATM</STATE>
+    <STATE>569.hAGaoMGcv.C1AHv.DTfAGfPBJr.Gc3wGgvUag4VclE1XzUmbkIGUjEFcg8EDarVPUAkbkMWYzAUYxMWZyQWYtQ2TzEFcksTY4c0b0IFc4AWYWYWYxMWZu4FUzkGbk8EDOXVZrUVKxUlYkIWYtMVYyQkag0VYRDFbvwFPgxvzM3vCPDQFXYTZrUlSg0VYWIUYmk1atMmWIM2TkwVYiQWYjYTZrU1WPrzKUMWYxM2KMEFduPzaiUWak4Fcy8hTkEFbkIGHPI2apU1XzM2KI0FbkIWZgw1KS8VakQVX4AhXkEFcc80bzUVay8EQxUWay4xcgYWnRP8DTTgEWfQFYnkTkcVZu4lSg0VYZIUYmk1atQTXzE1WP.QRyMUYrU1XzUFYRU1Yo8ladIUYmk1atQzakMGSu8FbZ4TY2AhTkcVZu41SP.G...........b3RF48+A...iJo..DX....3HB...F...b3RF48+A...iJo..DX..P..........D...............................................................D58B.v+++cPIjPBRDlYvwFD.HQX0claQCBDVYTZrUFHwfUUtQWZzwVYjA.B.jA.l.vJ.jD.QAPV.3E.vAPc.nG.6APe.PH.MBPk.PJ.xC.8.ze.HDvDAXR.0D.PALa.zFPsAXa.6FPuAHb.EG.y........BD..........h...................ATM</STATE>
     <LAYOUT>
       <INPUTS/>
       <OUTPUTS>
@@ -75,22 +75,21 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <FILTER uid="7" x="0.5600000000000001" y="0.5365384615384615" uiLastX_Normal="14"
+  <FILTER uid="7" x="0.50625" y="0.4942307692307693" uiLastX_Normal="14"
           uiLastY_Normal="22" uiopen_Normal="0">
-    <PLUGIN name="PolygonalSynthesizer" format="VST3" category="Fx" manufacturer="yourcompany"
-            version="1.0.0" file="/Users/Max/Library/Audio/Plug-Ins/VST3/PolygonalSynthesizer.vst3"
-            uid="acf76ed4" isInstrument="0" fileTime="17d0062467e" infoUpdateTime="17d006ccac3"
-            numInputs="2" numOutputs="2" isShell="0"/>
+    <PLUGIN name="PolygonalSynthesizer" format="VST3" category="Instrument|Synth"
+            manufacturer="yourcompany" version="1.0.0" file="/Users/Max/Library/Audio/Plug-Ins/VST3/PolygonalSynthesizer.vst3"
+            uid="acf76ed4" isInstrument="1" fileTime="17d0062467e" infoUpdateTime="17d0587f1f7"
+            numInputs="0" numOutputs="2" isShell="0"/>
     <STATE>191.VMjLgXK....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
     <LAYOUT>
-      <INPUTS>
-        <BUS index="0" layout="L R"/>
-      </INPUTS>
+      <INPUTS/>
       <OUTPUTS>
         <BUS index="0" layout="L R"/>
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
+  <CONNECTION srcFilter="2" srcChannel="4096" dstFilter="7" dstChannel="4096"/>
   <CONNECTION srcFilter="7" srcChannel="0" dstFilter="3" dstChannel="0"/>
   <CONNECTION srcFilter="7" srcChannel="1" dstFilter="3" dstChannel="1"/>
 </FILTERGRAPH>

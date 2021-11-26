@@ -2,9 +2,50 @@
 
 <JUCERPROJECT id="JnLkLD" name="PolygonalSynthesizer" projectType="audioplug"
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
-              jucerFormatVersion="1" cppLanguageStandard="17">
+              jucerFormatVersion="1" cppLanguageStandard="17" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="fv40Mi" name="PolygonalSynthesizer">
     <GROUP id="{768A232D-4226-B84C-98F9-6BEEC8BFD2DC}" name="Source">
+      <GROUP id="{C8FEE920-F158-F850-0607-21169108DFB7}" name="Data">
+        <FILE id="HeCQaZ" name="AdsrData.cpp" compile="1" resource="0" file="Source/Data/AdsrData.cpp"/>
+        <FILE id="PmzB7f" name="AdsrData.h" compile="0" resource="0" file="Source/Data/AdsrData.h"/>
+        <FILE id="Ni45vQ" name="CustomOscillator.h" compile="0" resource="0"
+              file="Source/Data/CustomOscillator.h"/>
+        <FILE id="tFMcik" name="CustomPhase.h" compile="0" resource="0" file="Source/Data/CustomPhase.h"/>
+        <FILE id="r7vy4u" name="FilterData.cpp" compile="1" resource="0" file="Source/Data/FilterData.cpp"/>
+        <FILE id="S6YZVz" name="FilterData.h" compile="0" resource="0" file="Source/Data/FilterData.h"/>
+        <FILE id="eVY47E" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>
+        <FILE id="dfcgNC" name="OscData.h" compile="0" resource="0" file="Source/Data/OscData.h"/>
+        <FILE id="ENzLXh" name="PolygonalOscData.cpp" compile="1" resource="0"
+              file="Source/Data/PolygonalOscData.cpp"/>
+        <FILE id="Rmaepk" name="PolygonalOscData.h" compile="0" resource="0"
+              file="Source/Data/PolygonalOscData.h"/>
+      </GROUP>
+      <GROUP id="{2B6E674E-A81F-D1AE-4D8D-9E75862BC0F0}" name="UI">
+        <FILE id="yJHBTT" name="AdsrComponent.cpp" compile="1" resource="0"
+              file="Source/UI/AdsrComponent.cpp"/>
+        <FILE id="VyAxm8" name="AdsrComponent.h" compile="0" resource="0" file="Source/UI/AdsrComponent.h"/>
+        <FILE id="ghYp8m" name="ComponentUtilities.h" compile="0" resource="0"
+              file="Source/UI/ComponentUtilities.h"/>
+        <FILE id="Du2gMJ" name="CustomSliderComponent.cpp" compile="1" resource="0"
+              file="Source/UI/CustomSliderComponent.cpp"/>
+        <FILE id="N2tN0m" name="CustomSliderComponent.h" compile="0" resource="0"
+              file="Source/UI/CustomSliderComponent.h"/>
+        <FILE id="ojz1pz" name="FilterComponent.cpp" compile="1" resource="0"
+              file="Source/UI/FilterComponent.cpp"/>
+        <FILE id="ikk9Ca" name="FilterComponent.h" compile="0" resource="0"
+              file="Source/UI/FilterComponent.h"/>
+        <FILE id="JPVD5W" name="OscComponent.cpp" compile="1" resource="0"
+              file="Source/UI/OscComponent.cpp"/>
+        <FILE id="Fn43O0" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>
+        <FILE id="kWtBYD" name="PolygonalOscComponent.cpp" compile="1" resource="0"
+              file="Source/UI/PolygonalOscComponent.cpp"/>
+        <FILE id="m8pQ1Y" name="PolygonalOscComponent.h" compile="0" resource="0"
+              file="Source/UI/PolygonalOscComponent.h"/>
+        <FILE id="dRjOxS" name="PolygonDisplayComponent.cpp" compile="1" resource="0"
+              file="Source/UI/PolygonDisplayComponent.cpp"/>
+        <FILE id="dgMPDj" name="PolygonDisplayComponent.h" compile="0" resource="0"
+              file="Source/UI/PolygonDisplayComponent.h"/>
+      </GROUP>
       <FILE id="GvA8VT" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="DkqkLM" name="PluginProcessor.h" compile="0" resource="0"
@@ -12,6 +53,9 @@
       <FILE id="BVynzB" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="PI6Fo7" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="pTGcF8" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
+      <FILE id="Itj1sj" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <FILE id="l0zkRV" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
@@ -34,6 +78,7 @@
         <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -47,6 +92,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

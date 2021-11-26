@@ -22,6 +22,12 @@ PolygonalSynthesizerAudioProcessor::PolygonalSynthesizerAudioProcessor()
                        )
 #endif
 {
+    synth.addSound(new SynthSound());
+    for(int voiceIdx=0; voiceIdx < numVoices; voiceIdx++){
+        synth.addVoice(new SynthVoice());
+    }
+    
+    
 }
 
 PolygonalSynthesizerAudioProcessor::~PolygonalSynthesizerAudioProcessor()
@@ -95,6 +101,15 @@ void PolygonalSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int s
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
+    synth.setCurrentPlaybackSampleRate(sampleRate);
+    
+    for(int i=0; i < synth.getNumVoices(); ++i){
+        if(auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))){
+            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+        }
+        
+    }
 }
 
 void PolygonalSynthesizerAudioProcessor::releaseResources()
@@ -135,27 +150,25 @@ void PolygonalSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>&
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
+    
+    for(int i=0; i < synth.getNumVoices(); ++i){
+        if(auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i))){
+            // We deal with the voice parameter updates here later...
+        }
     }
+    
+    setParams();
+    
+//    for(const auto metadata: midiMessages){
+//        if (metadata.numBytes == 3){
+//            juce::Logger::writeToLog("Timestamp: " + juce::String(metadata.getMessage().getTimeStamp()));
+//        }
+//    }
+    
+    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+//    filter.process(buffer);
 }
 
 //==============================================================================
@@ -189,3 +202,157 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new PolygonalSynthesizerAudioProcessor();
 }
+
+juce::AudioProcessorValueTreeState::ParameterLayout PolygonalSynthesizerAudioProcessor::createParameterLayout(){
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    
+    // Combo box to switch oscillator waveform
+    layout.add(std::make_unique<juce::AudioParameterChoice>("OSC1 Waveform", "OSC1 Waveform", juce::StringArray{"sine", "sawtooth", "square"}, 0));
+    
+    // FM Frequency - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 FM Freq",
+                                                           "OSC1 FM Frequency",
+                                                           juce::NormalisableRange<float>{0.0f, 1000.0f},
+                                                           5.0f));
+    
+    // FM Depth - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 FM Depth",
+                                                           "OSC1 FM Depth",
+                                                           juce::NormalisableRange<float>{0.0f, 1.0f},
+                                                           0.5f));
+    // Osc1 Pitch Adjustment - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Pitch",
+                                                           "OSC1 Pitch",
+                                                           juce::NormalisableRange<float>{0.25f, 4.0f, 0.001f, 1.0f},
+                                                           1.0f));
+    // Osc1 Gain - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Gain",
+                                                           "OSC1 Gain",
+                                                           juce::NormalisableRange<float>{0.0f, 1.0f, 0.001f, 0.33f},
+                                                           0.1f));
+    // Osc1 Order - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Order",
+                                                           "OSC1 Order",
+                                                           juce::NormalisableRange<float>{2.1f, 20.0f, 0.001f, 0.33f},
+                                                           4.0f));
+    // Osc1 Teeth - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Teeth",
+                                                           "OSC1 Teeth",
+                                                           juce::NormalisableRange<float>{0.0f, 1.0f, 0.001f, 1.0f},
+                                                           0.0f));
+    // Osc1 Gain - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OSC1 Phase Rotation",
+                                                           "OSC1 Phase Rotation",
+                                                           juce::NormalisableRange<float>{0.0f, 5.0f, 0.01f, 1.0f},
+                                                           0.0f));
+    // OSC1 Mono - bool
+    layout.add(std::make_unique<juce::AudioParameterBool>("OSC1 Mono",
+                                                          "OSC1 Mono",
+                                                          false));
+    // Attack - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Attack",
+                                                                 "Envelope Attack",
+                                                                 juce::NormalisableRange<float>{0.02f, 2.0f, 0.01, 0.25},
+                                                                 0.1f));
+    // Decay - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Decay",
+                                                                 "Envelope Decay",
+                                                                 juce::NormalisableRange<float>{0.02f, 2.0f, 0.01, 0.25},
+                                                                 0.1f));
+    // Sustain - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Sustain",
+                                                                 "Envelope Sustain",
+                                                                 juce::NormalisableRange<float>{0.0f, 1.0f, 0.01f, 0.25},
+                                                                 1.0f));
+    // Release - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Release",
+                                                                 "Envelope Release",
+                                                                 juce::NormalisableRange<float>{0.0f, 8.0f, 0.01, 0.25},
+                                                                 0.4f));
+    // Mod ADSR Attack - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mod Envelope Attack",
+                                                           "Mod Envelope Attack",
+                                                           juce::NormalisableRange<float>{0.02f, 2.0f, 0.01, 0.25},
+                                                           0.1f));
+    // Mod ADSR Decay - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mod Envelope Decay",
+                                                           "Mod Envelope Decay",
+                                                           juce::NormalisableRange<float>{0.02f, 2.0f, 0.01, 0.25},
+                                                           0.1f));
+    // Mod ADSR Sustain - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mod Envelope Sustain",
+                                                           "Mod Envelope Sustain",
+                                                           juce::NormalisableRange<float>{0.0f, 1.0f, 0.01f, 0.25},
+                                                           1.0f));
+    // Mod ADSR Release - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mod Envelope Release",
+                                                           "Mod Envelope Release",
+                                                           juce::NormalisableRange<float>{0.0f, 8.0f, 0.01, 0.25},
+                                                           0.4f));
+    // Filter type - Choice
+    layout.add(std::make_unique<juce::AudioParameterChoice>("Filter Type", "Filter Type", juce::StringArray{"LowPass", "BandPass", "HighPass"}, 0));
+    
+    // Filter frequency - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Freq",
+                                                           "Filter Freq",
+                                                           juce::NormalisableRange<float>{20.0f, 20000.0f, 1.0f, 0.33f},
+                                                           500.0f));
+    
+    // Filter resonance - float
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Resonance",
+                                                           "Filter Resonance",
+                                                           juce::NormalisableRange<float>{0.01f, 3.0f, 0.01f, 0.33f},
+                                                           1.0f));
+    
+    return layout;
+}
+
+void PolygonalSynthesizerAudioProcessor::setParams()
+{
+    setVoiceParams();
+    setFilterParams();
+//    setReverbParams();
+}
+
+void PolygonalSynthesizerAudioProcessor::setVoiceParams(){
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+    {
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
+        {
+            auto& attack = *apvts.getRawParameterValue ("Envelope Attack");
+            auto& decay = *apvts.getRawParameterValue ("Envelope Decay");
+            auto& sustain = *apvts.getRawParameterValue ("Envelope Sustain");
+            auto& release = *apvts.getRawParameterValue ("Envelope Release");
+            
+            auto& modAttack = *apvts.getRawParameterValue ("Mod Envelope Attack");
+            auto& modDecay = *apvts.getRawParameterValue ("Mod Envelope Decay");
+            auto& modSustain = *apvts.getRawParameterValue ("Mod Envelope Sustain");
+            auto& modRelease = *apvts.getRawParameterValue ("Mod Envelope Release");
+            
+            auto& osc1PitchAdjustment = *apvts.getRawParameterValue("OSC1 Pitch");
+            auto& osc1Order = *apvts.getRawParameterValue("OSC1 Order");
+            auto& osc1Teeth = *apvts.getRawParameterValue("OSC1 Teeth");
+            auto& osc1PhaseRotation = *apvts.getRawParameterValue("OSC1 Phase Rotation");
+            auto& osc1Gain = *apvts.getRawParameterValue("OSC1 Gain");
+            auto& osc1Mono = *apvts.getRawParameterValue("OSC1 Mono");
+            
+            auto& filterType = *apvts.getRawParameterValue ("Filter Type");
+            auto& filterFrequency = *apvts.getRawParameterValue ("Filter Freq");
+            auto& filterResonance = *apvts.getRawParameterValue ("Filter Resonance");
+            
+            
+            
+            voice->updateADSRMod(modAttack.load(), modDecay.load(), modSustain.load(), modRelease.load());
+            voice->updateFilter(filterType.load(), filterFrequency.load(), filterResonance.load());
+            voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
+            voice->setOscillatorParameters(osc1PitchAdjustment.load(), osc1Order.load(), osc1Teeth.load(), osc1PhaseRotation.load(), osc1Gain.load(), osc1Mono.load());
+        }
+        
+    }
+}
+
+void PolygonalSynthesizerAudioProcessor::setFilterParams(){
+
+}
+
